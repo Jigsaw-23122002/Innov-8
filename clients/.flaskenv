@@ -1,0 +1,3 @@
+FLASK_ENV = development
+SUPABASE_URL = https://yuhrnfjyvvbluvhlpbhm.supabase.co
+SUPABASE_ANON_KEY = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl1aHJuZmp5dnZibHV2aGxwYmhtIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NjIyOTQzOTYsImV4cCI6MTk3Nzg3MDM5Nn0.ueJAWAmBuCAE4wvCvSihgiWcS73S8hsbT0CiiICRhdo
