@@ -1,0 +1,180 @@
+@import url("https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700;900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Open Sans;
+  transition: ease 0.3s;
+}
+
+html {
+  font-size: 12px;
+}
+
+:root {
+  --color1: #161724;
+  --color2: #23243b;
+  --color3: #595fb7;
+  --color4: #e8e8ea;
+  --color5: #474866;
+}
+
+body {
+  background-image: url("https://media.istockphoto.com/vectors/abstract-blue-wave-background-vector-id1223914421?k=20&m=1223914421&s=612x612&w=0&h=pdDbLnTMYY-sC4_GfpWePXo3ePEGPENQSeBoPh0E1xc=");
+}
+
+.container {
+  background: var(--color2);
+  width: 100%;
+  max-width: 950px;
+  margin: 0 auto;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  border-radius: 1rem;
+  padding: 4rem;
+  color: var(--color4);
+}
+
+.heading {
+  font-size: 2.6rem;
+  letter-spacing: 0.1rem;
+  margin-bottom: 3rem;
+  font-family: Merriweather;
+}
+
+form {
+  display: flex;
+  gap: 4rem;
+}
+
+.left {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 2.5rem;
+  border: solid 0.25rem var(--color5);
+  border-radius: 0.5rem;
+  height: 17rem;
+  width: 25rem;
+  margin-top: 1.9rem;
+}
+.left img {
+  width: 10rem;
+  height: 10rem;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.left label {
+  color: var(--color3);
+  text-decoration: none;
+  font-size: 1.4rem;
+  cursor: pointer;
+  font-weight: 600;
+}
+.left label:hover {
+  opacity: 0.8;
+}
+.left input {
+  display: none;
+}
+
+.right {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: end;
+}
+.right .row {
+  display: flex;
+  gap: 2rem;
+}
+.right .col {
+  display: flex;
+  flex-direction: column;
+}
+.right label {
+  font-size: 1.2rem;
+  margin-bottom: 0.3rem;
+}
+.right input,
+.right select {
+  width: 20rem;
+  background: var(--color2);
+  color: var(--color4);
+  border: solid 0.25rem var(--color5);
+  border-radius: 0.5rem;
+  padding: 1rem 2rem;
+  outline: none;
+  font-size: 1.4rem;
+  letter-spacing: 0.1rem;
+}
+.right .bio input,
+.right .email input,
+.right .interests input
+{
+  width: 42rem;
+}
+
+.buttons {
+  width: 100%;
+  align-items: center;
+  justify-content: right;
+}
+.cancel {
+  background: var(--color1);
+  color: var(--color4);
+}
+.save {
+  background: var(--color4);
+  color: var(--color1);
+  cursor: pointer;
+}
+.save:hover,
+.cancel:hover {
+  opacity: 0.8;
+}
+.cancel,
+.save {
+  display: inline-block;
+  text-decoration: none;
+  padding: 1rem 2rem;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin-top: 1.5rem;
+}
+
+@media only screen and (max-width: 850px) {
+  .heading {
+    text-align: center;
+  }
+  form {
+    flex-direction: column;
+    align-items: center;
+  }
+  .right {
+    width: 42rem;
+  }
+  .buttons {
+    justify-content: center;
+  }
+  .buttons a {
+    width: 15rem;
+    text-align: center;
+  }
+}
+@media only screen and (max-width: 775px) {
+  html {
+    font-size: 10px;
+  }
+}
+@media only screen and (max-width: 512px) {
+  html {
+    font-size: 8px;
+  }
+}
