@@ -316,7 +316,7 @@ def getStudentList():
   }
   """
     data = client.execute(query=query, headers=headers)
-    return data
+    return data["data"]["Student"]
 
 
 def userRegister(type, email, password, uuid):
@@ -471,7 +471,8 @@ def chat():
 
 @app.route('/studentList')
 def studentList():
-  return render_template('students_list.html')
+  data = getStudentList()
+  return render_template('students_list.html', data = data)
 
 @app.route('/displayProjects/<int:pId>')
 def displayProjects(pId):
