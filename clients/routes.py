@@ -1,5 +1,6 @@
 import os
 from pydoc import cli
+from winreg import QueryInfoKey
 from flask import redirect, render_template, flash, request
 from flask import Flask
 from clients import app
@@ -316,6 +317,64 @@ def getStudentList():
     return data
 
 
+def userRegister(type, email, password, uuid):
+    print(type)
+    print(email)
+    print(password)
+    print(uuid)
+    if type == 'Student':
+        query = """
+        mutation MyMutation($student_id: uuid = "", $student_email: String = "", $student_password: String = "") {
+          insert_Student_one(object: {student_id: $student_id, student_email: $student_email, student_password: $student_password}) {
+            student_id
+          }
+        }
+        """
+        variables = {
+            "student_email": email,
+            "student_id": str(uuid),
+            "student_password": password
+        }
+        data = client.execute(
+            query=query, variables=variables, headers=headers)
+        print(data)
+        return data
+
+    elif type == 'Organizer':
+        query = """
+        mutation MyMutation($organizer_id: uuid = "", $organizer_email: String = "", $organizer_password: String = "") {
+          insert_Organizer_one(object: {organizer_id: $organizer_id, organizer_email: $organizer_email, organizer_password: $organizer_password}) {
+            organizer_id
+          }
+        }
+        """
+        variables = {
+            "organizer_email": email,
+            "organizer_id": str(uuid),
+            "organizer_password": password,
+        }
+        data = client.execute(
+            query=query, variables=variables, headers=headers)
+        return data
+
+    else:
+        query = """
+        mutation MyMutation($sponsor_id: uuid = "", $sponsor_email: String = "", $sponsor_password: String = "") {
+          insert_Sponsor_one(object: {sponsor_id: $sponsor_id, sponsor_email: $sponsor_email, sponsor_password: $sponsor_password}) {
+            sponsor_id
+          }
+        }
+        """
+        variables = {
+            "sponsor_email": email,
+            "sponsor_id": str(uuid),
+            "sponsor_password": password,
+        }
+        data = client.execute(
+            query=query, variables=variables, headers=headers)
+        return data
+
+
 @app.route('/')
 def home_page():
     if supabase.auth.current_user:
@@ -334,6 +393,8 @@ def signup():
             random_password: str = form.password.data
             user = supabase.auth.sign_up(
                 email=random_email, password=random_password)
+            userRegister(form.category.data, random_email,
+                         random_password, user.id)
             if supabase.auth.current_user:
                 print(supabase.auth.current_user.id)
             else:
