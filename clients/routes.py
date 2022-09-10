@@ -1,32 +1,33 @@
 import os
 from pydoc import cli
-from flask import redirect, render_template,flash,request
+from flask import redirect, render_template, flash, request
 from flask import Flask
 from clients import app
 from flask_sqlalchemy import SQLAlchemy
 from supabase import create_client, Client
-# from flask_graphql import GraphQLView
 from python_graphql_client import GraphqlClient
-# import requests
+from urllib import request
+from clients.forms import LoginForm, SignUpForm
 
 
-
-# from app.schema import schema 
+# from app.schema import schema
 url: str = os.environ.get("SUPABASE_URL")
 key: str = os.environ.get("SUPABASE_ANON_KEY")
-supabase: Client = create_client(url, key)
+supabase: Client = create_client("https://yuhrnfjyvvbluvhlpbhm.supabase.co",
+                                 "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl1aHJuZmp5dnZibHV2aGxwYmhtIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NjIyOTQzOTYsImV4cCI6MTk3Nzg3MDM5Nn0.ueJAWAmBuCAE4wvCvSihgiWcS73S8hsbT0CiiICRhdo")
 user = supabase.auth.user()
 # print(user)
 
 # Instantiate the client with an endpoint.
 client = GraphqlClient(endpoint="https://innov-8.hasura.app/v1/graphql")
-headers = { "x-hasura-admin-secret": "SLZkKBZbyB5qrPgJGM6e4ytxrEgDymSoZ756aSDkf8ky6cDYGRPFrc7D3alyV3fp" }
+headers = {
+    "x-hasura-admin-secret": "SLZkKBZbyB5qrPgJGM6e4ytxrEgDymSoZ756aSDkf8ky6cDYGRPFrc7D3alyV3fp"}
 # Create the query string and variables required for the request.
 # variables = {"countryCode": "CA"}
-  
+
 
 def organizerDetail():
-  query = """
+    query = """
   query MyQuery {
     Organizer {
       organizer_email
@@ -35,12 +36,13 @@ def organizerDetail():
     }
   }
   """
-  data = client.execute(query=query,headers=headers)
-  print(data) # {'data': {'Organizer': []}}
+    data = client.execute(query=query, headers=headers)
+    print(data)  # {'data': {'Organizer': []}}
 # organizerDetail()
 
+
 def searchProject(ProjectTitle):
-  query = """
+    query = """
   query MyQuery($proj_title: String_comparison_exp = {_eq: ""}) {
     Project(where: {proj_title: $proj_title}) {
       proj_id
@@ -51,15 +53,19 @@ def searchProject(ProjectTitle):
     }
   }
   """
-  variables = {
-    "proj_title": {"_eq":ProjectTitle}
-  }
-  data = client.execute(query = query, headers = headers,variables=variables)
-  return data # {'data': {'Project': [{'proj_id': 'ed523569-35f9-4651-a44c-2f00b8717b35', 'proj_title': 'Ananya', 'proj_rich_text_desc': 'bkfebfkj', 'proj_desc': 'dbkewbfkw', 'proj_drive_link': 'fhwjbfkwejfbhr'}]}}
+    variables = {
+        "proj_title": {"_eq": ProjectTitle}
+    }
+    data = client.execute(query=query, headers=headers, variables=variables)
+    # {'data': {'Project': [{'proj_id': 'ed523569-35f9-4651-a44c-2f00b8717b35', 'proj_title': 'Ananya', 'proj_rich_text_desc': 'bkfebfkj', 'proj_desc': 'dbkewbfkw', 'proj_drive_link': 'fhwjbfkwejfbhr'}]}}
+    return data
 
-print(searchProject("Ani")['data']['Project']==[])
+
+print(searchProject("Ani")['data']['Project'] == [])
+
+
 def getProjectList(usr_det):
-  query = """
+    query = """
   query MyQuery($student_id: uuid_comparison_exp = {}) {
     ProjectLink(where: {student_id: $student_id}) {
       link_id
@@ -68,13 +74,14 @@ def getProjectList(usr_det):
     }
   }
   """
-  variables = {
-    "student_id": {"_eq": usr_det}
-  }
-  projLinkDet=client.execute(query=query,variables=variables,headers=headers)
-  if projLinkDet['data']['ProjectLink']==[]:
-      return []
-  query = """
+    variables = {
+        "student_id": {"_eq": usr_det}
+    }
+    projLinkDet = client.execute(
+        query=query, variables=variables, headers=headers)
+    if projLinkDet['data']['ProjectLink'] == []:
+        return []
+    query = """
   query MyQuery($proj_id: uuid_comparison_exp = {}) {
     Project(where: {proj_id: $proj_id}) {
       proj_desc
@@ -85,69 +92,69 @@ def getProjectList(usr_det):
     }
   }  
   """
-  variables = {
-    "proj_id": {"_eq": projLinkDet['data']['ProjectLink'][0]['project_id']}
-  }
-  data = client.execute(query = query, variables=variables,headers = headers)
-  return data
+    variables = {
+        "proj_id": {"_eq": projLinkDet['data']['ProjectLink'][0]['project_id']}
+    }
+    data = client.execute(query=query, variables=variables, headers=headers)
+    return data
+
 
 def FollowUser(usr_det):
-  query="""
+    query = """
   mutation MyMutation($follower_id: uuid = "", $following_id: uuid = "") {
     insert_Follow_one(object: {follower_id: $follower_id, following_id: $following_id}) {
       follow_id
     }
   }  
   """
-  variables = {
-    "follower_id": usr_det,
-    "following_id": user
-  }
-  data = client.execute(query = query, variables=variables,headers = headers)
-  return data
-  # conn = db_connection()
-  # cursor = conn.cursor()
-  # usr_id = userDetails()[0][0]
-  # # tou=current_user.type_of_user
-  # sql_query = '''INSERT into Follow(follower_id,following_id) values ({},{})'''.format( usr_det[0][0], usr_id)
-  # cursor =cursor.execute(sql_query)
-  # conn.commit()
+    variables = {
+        "follower_id": usr_det,
+        "following_id": user
+    }
+    data = client.execute(query=query, variables=variables, headers=headers)
+    return data
+    # conn = db_connection()
+    # cursor = conn.cursor()
+    # usr_id = userDetails()[0][0]
+    # # tou=current_user.type_of_user
+    # sql_query = '''INSERT into Follow(follower_id,following_id) values ({},{})'''.format( usr_det[0][0], usr_id)
+    # cursor =cursor.execute(sql_query)
+    # conn.commit()
 
 
 def isFollowed(usr_det):
-  query = """
+    query = """
   query MyQuery($follower_id: uuid_comparison_exp = {}, $following_id: uuid_comparison_exp = {}) {
     Follow(where: {follower_id: $follower_id, following_id: $following_id}) {
       follow_id
     }
   }
   """
-  variables = {
-    "follower_id": {"_eq": usr_det},
-    "following_id": {"_eq": user} 
-  }
-  data = client.execute(query = query, variables=variables,headers = headers)
-  return data['data']['Follow']==[]
+    variables = {
+        "follower_id": {"_eq": usr_det},
+        "following_id": {"_eq": user}
+    }
+    data = client.execute(query=query, variables=variables, headers=headers)
+    return data['data']['Follow'] == []
+
 
 def isSponsored():
-  conn = db_connection()
-  cursor = conn.cursor()
-  usr_id = userDetails()[0][0]
-  query = """
+    query = """
   query MyQuery($sponsor_id: uuid_comparison_exp = {}) {
     Sponsorship(where: {sponsor_id: $sponsor_id}) {
       event_id
     }
   }
   """
-  variables = {
-    "sponsor_id": {"_eq": ""}
-  }
-  data = client.execute(query = query, variables=variables,headers = headers)
-  return data
+    variables = {
+        "sponsor_id": {"_eq": ""}
+    }
+    data = client.execute(query=query, variables=variables, headers=headers)
+    return data
+
 
 def getEvents():
-  query = """
+    query = """
   query MyQuery {
     Event {
       event_description
@@ -161,11 +168,12 @@ def getEvents():
     }
   }
   """
-  data = client.execute(query = query,headers=headers)
-  return data
+    data = client.execute(query=query, headers=headers)
+    return data
+
 
 def searchOrganizer(userId):
-  query = """
+    query = """
   query MyQuery($organizer_id: uuid_comparison_exp = {}) {
     Organizer(where: {organizer_id: $organizer_id}) {
       organizer_email
@@ -175,16 +183,17 @@ def searchOrganizer(userId):
     }
   }
   """
-  variables = {
-    "organizer_id": {
-      "_eq": userId
+    variables = {
+        "organizer_id": {
+            "_eq": userId
+        }
     }
-  }
-  data = client.execute(query = query,headers=headers,variables=variables)
-  return data 
+    data = client.execute(query=query, headers=headers, variables=variables)
+    return data
+
 
 def searchSponsor(userId):
-  query = """
+    query = """
   query MyQuery($sponsor_id: uuid_comparison_exp = {}) {
     Sponsor(where: {sponsor_id: $sponsor_id}) {
       sponsor_email
@@ -196,16 +205,17 @@ def searchSponsor(userId):
     }
   }
   """
-  variables = {
-    "sponsor_id": {
-      "_eq": userId
+    variables = {
+        "sponsor_id": {
+            "_eq": userId
+        }
     }
-  }
-  data = client.execute(query = query,headers=headers,variables=variables)
-  return data
+    data = client.execute(query=query, headers=headers, variables=variables)
+    return data
+
 
 def searchStudent(userId):
-  query = """
+    query = """
   query MyQuery($student_id: uuid_comparison_exp = {}) {
     Student(where: {student_id: $student_id}) {
       student_email
@@ -215,46 +225,49 @@ def searchStudent(userId):
     }
   }
   """
-  variables = {
-    "student_id": {
-      "_eq": userId
+    variables = {
+        "student_id": {
+            "_eq": userId
+        }
     }
-  }
-  data = client.execute(query = query,headers=headers,variables=variables)
-  return data
+    data = client.execute(query=query, headers=headers, variables=variables)
+    return data
+
 
 def userDetails():
-  data = searchOrganizer(user)
-  if(data["data"]["Organizer"]!=[]):
-    return data
-  data = searchSponsor(user)
-  if(data["data"]["Sponsor"]!=[]):
-    return data
-  data = searchStudent(user)
-  if(data["data"]["Student"]!=[]):
-    return data
-  return []
+    data = searchOrganizer(user)
+    if (data["data"]["Organizer"] != []):
+        return data
+    data = searchSponsor(user)
+    if (data["data"]["Sponsor"] != []):
+        return data
+    data = searchStudent(user)
+    if (data["data"]["Student"] != []):
+        return data
+    return []
 
-def getUserList(typeofuser,Searchuser):
-  if(typeofuser=="Student"):
-    return searchStudent(Searchuser)
-  if(typeofuser=="Sponsor"):
-    return searchSponsor(Searchuser)
-  if(typeofuser=="Organizer"):
-    return searchOrganizer(Searchuser)
-  return []
-  # conn = db_connection()
-  # cursor = conn.cursor()
-  # # tou=current_user.type_of_user
-  # tou=typeofuser
-  # sql_query = '''
-  # SELECT * FROM {} WHERE {} = "{}"'''.format(table_info[tou][0],table_info[tou][1],Searchuser)
-  # cursor =cursor.execute(sql_query)
-  
-  # return cursor.fetchall()
+
+def getUserList(typeofuser, Searchuser):
+    if (typeofuser == "Student"):
+        return searchStudent(Searchuser)
+    if (typeofuser == "Sponsor"):
+        return searchSponsor(Searchuser)
+    if (typeofuser == "Organizer"):
+        return searchOrganizer(Searchuser)
+    return []
+    # conn = db_connection()
+    # cursor = conn.cursor()
+    # # tou=current_user.type_of_user
+    # tou=typeofuser
+    # sql_query = '''
+    # SELECT * FROM {} WHERE {} = "{}"'''.format(table_info[tou][0],table_info[tou][1],Searchuser)
+    # cursor =cursor.execute(sql_query)
+
+    # return cursor.fetchall()
+
 
 def getSponsorship(id):
-  query = """
+    query = """
   mutation MyMutation($event_id: uuid = "", $sponsor_id: uuid = "") {
     insert_Sponsorship(objects: {event_id: $event_id, sponsor_id: $sponsor_id}) {
       returning {
@@ -263,15 +276,16 @@ def getSponsorship(id):
     }
   }
   """
-  variables  = {
-    "sponsor_id": user,
-    "event_id": id
-  }
-  data  = client.execute(query=query, variables=variables,headers=headers)
-  return data
+    variables = {
+        "sponsor_id": user,
+        "event_id": id
+    }
+    data = client.execute(query=query, variables=variables, headers=headers)
+    return data
+
 
 def getSponsorsList():
-  query = """
+    query = """
   query MyQuery {
     Sponsor {
       sponsor_email
@@ -283,11 +297,12 @@ def getSponsorsList():
     }
   }
   """
-  data  = client.execute(query=query,headers=headers)
-  return data
+    data = client.execute(query=query, headers=headers)
+    return data
+
 
 def getStudentList():
-  query = """
+    query = """
   query MyQuery {
     Student {
       student_email
@@ -297,13 +312,254 @@ def getStudentList():
     }
   }
   """
-  data  = client.execute(query=query,headers=headers)
-  return data
+    data = client.execute(query=query, headers=headers)
+    return data
+
 
 @app.route('/')
-def home():
-    return render_template('index.html')
+def home_page():
+    if supabase.auth.current_user:
+        print(supabase.auth.current_user.id)
+    else:
+        print('null')
+    return render_template('home.html')
 
-@app.route('/posts')
-def posts():
-  return render_template('posts.html') 
+
+@app.route('/signup', methods=['GET', 'POST'])
+def signup():
+    form = SignUpForm()
+    if form.validate_on_submit():
+        try:
+            random_email: str = form.email.data
+            random_password: str = form.password.data
+            user = supabase.auth.sign_up(
+                email=random_email, password=random_password)
+            if supabase.auth.current_user:
+                print(supabase.auth.current_user.id)
+            else:
+                print('null')
+            return redirect('/login')
+
+        except ValueError as e:
+            print('An exception occured')
+
+    if form.errors != {}:
+        for err in form.errors.values():
+            flash(
+                f'there was an error in creating a user:{err}', category="danger")
+
+    return render_template('signup.html', form=form)
+
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        try:
+            random_email: str = form.email.data
+            random_password: str = form.password.data
+            user = supabase.auth.sign_in(
+                email=random_email, password=random_password)
+            print(supabase.auth.current_user.id)
+            return redirect('/')
+
+        except ValueError as e:
+            print(e)
+
+    return render_template('login.html', form=form)
+
+
+@app.route('/individual_projects')
+def individual_projects():
+    # Fetch the projects made the uuid of the student who is signed in
+    data = [{
+        'project_uuid': 'lambda',
+        'team_name': 'TechnoSrats',
+            'team_members': [
+                'Harsh Nag',
+                'Sarvagnya Purohit',
+                'Ketaki Deshmukh',
+                'Smit Sekhadia',
+                'Anuraag Jajoo'
+            ],
+            'project_description':'This template offers an outline to create an architectural or construction project description template. Customize the template based on the type of project and the needs of your company or client. List supporting documents, such as environmental analysis or additional design plans. Follow the template format to create a thorough project description that includes goals, phases, design specifications, and financial requirements.'
+            }, {
+            'project_uuid': 'lambda',
+            'team_name': 'TechnoSrats',
+            'team_members': [
+                'Harsh Nag',
+                'Sarvagnya Purohit',
+                'Ketaki Deshmukh',
+                'Smit Sekhadia',
+                'Anuraag Jajoo'
+            ],
+            'project_description':'This template offers an outline to create an architectural or construction project description template. Customize the template based on the type of project and the needs of your company or client. List supporting documents, such as environmental analysis or additional design plans. Follow the template format to create a thorough project description that includes goals, phases, design specifications, and financial requirements.'
+            }, {
+            'project_uuid': 'lambda',
+            'team_name': 'TechnoSrats',
+            'team_members': [
+                'Harsh Nag',
+                'Sarvagnya Purohit',
+                'Ketaki Deshmukh',
+                'Smit Sekhadia',
+                'Anuraag Jajoo'
+            ],
+            'project_description':'This template offers an outline to create an architectural or construction project description template. Customize the template based on the type of project and the needs of your company or client. List supporting documents, such as environmental analysis or additional design plans. Follow the template format to create a thorough project description that includes goals, phases, design specifications, and financial requirements.'
+            }, {
+            'project_uuid': 'lambda',
+            'team_name': 'TechnoSrats',
+            'team_members': [
+                'Harsh Nag',
+                'Sarvagnya Purohit',
+                'Ketaki Deshmukh',
+                'Smit Sekhadia',
+                'Anuraag Jajoo'
+            ],
+            'project_description':'This template offers an outline to create an architectural or construction project description template. Customize the template based on the type of project and the needs of your company or client. List supporting documents, such as environmental analysis or additional design plans. Follow the template format to create a thorough project description that includes goals, phases, design specifications, and financial requirements.'
+            }
+            ]
+    return render_template('individual_projects.html', data=data)
+
+
+@app.route('/individual_events')
+def individual_events():
+    # Fetch the projects made the uuid of the organizer who is signed in
+    data = [{
+        'event_uuid': 'sunderbans',
+        'event_name': 'HackOdisha 2.0',
+        'event_sponsorers': [
+            'Amazon',
+            'Flipkart',
+            'Firebase'
+        ],
+        'event_description':'An event description is copy that aims to tell your potential attendees what will be happening at the event, who will be speaking, and what they will get out of attending. Good event descriptions can drive attendance to events and also lead to more media coverage.',
+    }, {
+        'event_uuid': 'sunderbans',
+        'event_name': 'HackOdisha 2.0',
+        'event_sponsorers': [
+            'Amazon',
+            'Flipkart',
+            'Firebase'
+        ],
+        'event_description':'An event description is copy that aims to tell your potential attendees what will be happening at the event, who will be speaking, and what they will get out of attending. Good event descriptions can drive attendance to events and also lead to more media coverage.',
+    }, {
+        'event_uuid': 'sunderbans',
+        'event_name': 'HackOdisha 2.0',
+        'event_sponsorers': [
+            'Amazon',
+            'Flipkart',
+            'Firebase'
+        ],
+        'event_description':'An event description is copy that aims to tell your potential attendees what will be happening at the event, who will be speaking, and what they will get out of attending. Good event descriptions can drive attendance to events and also lead to more media coverage.',
+    }, {
+        'event_uuid': 'sunderbans',
+        'event_name': 'HackOdisha 2.0',
+        'event_sponsorers': [
+            'Amazon',
+            'Flipkart',
+            'Firebase'
+        ],
+        'event_description':'An event description is copy that aims to tell your potential attendees what will be happening at the event, who will be speaking, and what they will get out of attending. Good event descriptions can drive attendance to events and also lead to more media coverage.',
+    }]
+    return render_template('individual_events.html', data=data)
+
+
+@app.route('/list_projects')
+def list_projects():
+    # Fetch the list of projects for the particular event
+    data = [{
+        'project_uuid': 'lambda',
+        'team_name': 'TechnoSrats',
+            'team_members': [
+                'Harsh Nag',
+                'Sarvagnya Purohit',
+                'Ketaki Deshmukh',
+                'Smit Sekhadia',
+                'Anuraag Jajoo'
+            ],
+            'project_description':'This template offers an outline to create an architectural or construction project description template. Customize the template based on the type of project and the needs of your company or client. List supporting documents, such as environmental analysis or additional design plans. Follow the template format to create a thorough project description that includes goals, phases, design specifications, and financial requirements.'
+            }, {
+            'project_uuid': 'lambda',
+            'team_name': 'TechnoSrats',
+            'team_members': [
+                'Harsh Nag',
+                'Sarvagnya Purohit',
+                'Ketaki Deshmukh',
+                'Smit Sekhadia',
+                'Anuraag Jajoo'
+            ],
+            'project_description':'This template offers an outline to create an architectural or construction project description template. Customize the template based on the type of project and the needs of your company or client. List supporting documents, such as environmental analysis or additional design plans. Follow the template format to create a thorough project description that includes goals, phases, design specifications, and financial requirements.'
+            }, {
+            'project_uuid': 'lambda',
+            'team_name': 'TechnoSrats',
+            'team_members': [
+                'Harsh Nag',
+                'Sarvagnya Purohit',
+                'Ketaki Deshmukh',
+                'Smit Sekhadia',
+                'Anuraag Jajoo'
+            ],
+            'project_description':'This template offers an outline to create an architectural or construction project description template. Customize the template based on the type of project and the needs of your company or client. List supporting documents, such as environmental analysis or additional design plans. Follow the template format to create a thorough project description that includes goals, phases, design specifications, and financial requirements.'
+            }, {
+            'project_uuid': 'lambda',
+            'team_name': 'TechnoSrats',
+            'team_members': [
+                'Harsh Nag',
+                'Sarvagnya Purohit',
+                'Ketaki Deshmukh',
+                'Smit Sekhadia',
+                'Anuraag Jajoo'
+            ],
+            'project_description':'This template offers an outline to create an architectural or construction project description template. Customize the template based on the type of project and the needs of your company or client. List supporting documents, such as environmental analysis or additional design plans. Follow the template format to create a thorough project description that includes goals, phases, design specifications, and financial requirements.'
+            }
+            ]
+    return render_template('list_of_projects.html', data=data)
+
+
+@app.route('/list_events')
+def list_events():
+    # Fetch the list of events available for participation
+    data = [{
+        'event_uuid': 'sunderbans',
+        'event_name': 'HackOdisha 2.0',
+        'event_sponsorers': [
+            'Amazon',
+            'Flipkart',
+            'Firebase'
+        ],
+        'event_description':'An event description is copy that aims to tell your potential attendees what will be happening at the event, who will be speaking, and what they will get out of attending. Good event descriptions can drive attendance to events and also lead to more media coverage.',
+    }, {
+        'event_uuid': 'sunderbans',
+        'event_name': 'HackOdisha 2.0',
+        'event_sponsorers': [
+            'Amazon',
+            'Flipkart',
+            'Firebase'
+        ],
+        'event_description':'An event description is copy that aims to tell your potential attendees what will be happening at the event, who will be speaking, and what they will get out of attending. Good event descriptions can drive attendance to events and also lead to more media coverage.',
+    }, {
+        'event_uuid': 'sunderbans',
+        'event_name': 'HackOdisha 2.0',
+        'event_sponsorers': [
+            'Amazon',
+            'Flipkart',
+            'Firebase'
+        ],
+        'event_description':'An event description is copy that aims to tell your potential attendees what will be happening at the event, who will be speaking, and what they will get out of attending. Good event descriptions can drive attendance to events and also lead to more media coverage.',
+    }, {
+        'event_uuid': 'sunderbans',
+        'event_name': 'HackOdisha 2.0',
+        'event_sponsorers': [
+            'Amazon',
+            'Flipkart',
+            'Firebase'
+        ],
+        'event_description':'An event description is copy that aims to tell your potential attendees what will be happening at the event, who will be speaking, and what they will get out of attending. Good event descriptions can drive attendance to events and also lead to more media coverage.',
+    }]
+    return render_template('list_of_events.html', data=data)
+
+
+@app.route('/logout')
+def logout():
+    supabase.auth.sign_out()
+    return redirect('/')
