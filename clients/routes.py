@@ -3,32 +3,29 @@ from pydoc import cli
 from winreg import QueryInfoKey
 from flask import redirect, render_template, flash, request
 from flask import Flask
+from flask import url_for
 from clients import app
 from flask_sqlalchemy import SQLAlchemy
 from supabase import create_client, Client
 from python_graphql_client import GraphqlClient
 from urllib import request
-from clients.forms import LoginForm, SignUpForm
+from clients.forms import LoginForm, SignUpForm, MessageForm
 
 
 # from app.schema import schema
 url: str = os.environ.get("SUPABASE_URL")
 key: str = os.environ.get("SUPABASE_ANON_KEY")
 supabase: Client = create_client(url, key)
-if(supabase.auth.current_user):
-  user = supabase.auth.current_user.id
-else:
-  user = -1
+# if(supabase.auth.current_user):
+#   user = supabase.auth.current_user.id
+# else:
+#   user = -1
 # print(user)
 
 # Instantiate the client with an endpoint.
 client = GraphqlClient(endpoint="https://innov-8.hasura.app/v1/graphql")
 headers = {
     "x-hasura-admin-secret": "SLZkKBZbyB5qrPgJGM6e4ytxrEgDymSoZ756aSDkf8ky6cDYGRPFrc7D3alyV3fp"}
-# Create the query string and variables required for the request.
-# variables = {"countryCode": "CA"}
-
-
 def organizerDetail():
     query = """
   query MyQuery {
@@ -110,11 +107,14 @@ def FollowUser(usr_det):
     }
   }  
   """
+    user = supabase.auth.current_user.id
+    print("required data is :",user,usr_det)
     variables = {
-        "follower_id": usr_det,
-        "following_id": user
+        "follower_id": str(usr_det),
+        "following_id": str(user)
     }
     data = client.execute(query=query, variables=variables, headers=headers)
+    print("req data is",data)
     return data
     # conn = db_connection()
     # cursor = conn.cursor()
@@ -126,19 +126,23 @@ def FollowUser(usr_det):
 
 
 def isFollowed(usr_det):
-    query = """
+  query = """
   query MyQuery($follower_id: uuid_comparison_exp = {}, $following_id: uuid_comparison_exp = {}) {
     Follow(where: {follower_id: $follower_id, following_id: $following_id}) {
       follow_id
     }
   }
   """
-    variables = {
-        "follower_id": {"_eq": usr_det},
-        "following_id": {"_eq": user}
-    }
-    data = client.execute(query=query, variables=variables, headers=headers)
-    return data['data']['Follow'] == []
+  # print(supabase.auth.current_user)
+  user = supabase.auth.current_user.id
+  variables = {
+      "follower_id": {"_eq": str(usr_det)},
+      "following_id": {"_eq": str(user)}
+  }
+  print("id of user",user)
+  data = client.execute(query=query, variables=variables, headers=headers)
+  print("data of the page is",data)
+  return data['data']['Follow'] != []
 
 
 def isSponsored():
@@ -218,9 +222,9 @@ def searchSponsor(userId):
 
 
 def searchStudent(userId):
-    query = """
-  query MyQuery($student_id: uuid_comparison_exp = {}) {
-    Student(where: {student_id: $student_id}) {
+  query = """
+  query MyQuery($_eq: uuid = "") {
+    Student(where: {student_name: {_eq: ""}}) {
       student_email
       student_id
       student_name
@@ -228,13 +232,11 @@ def searchStudent(userId):
     }
   }
   """
-    variables = {
-        "student_id": {
-            "_eq": userId
-        }
-    }
-    data = client.execute(query=query, headers=headers, variables=variables)
-    return data
+  variables = {
+    "_eq": userId
+  }
+  data = client.execute(query=query, headers=headers, variables=variables)['data']['Student']
+  return data
 
 
 def userDetails():
@@ -384,11 +386,13 @@ def sendMessage(to_id,msg):
         message_id
       }
     }
-  }  
+  } 
+  
   """
+  user =  supabase.auth.current_user.id
   variables = {
-    "to_id": to_id,
-    "user_id": user,
+    "to_id": str(to_id),
+    "user_id": str(user),
     "user_msg": msg
   }
   data = client.execute(variables=variables,query=query,headers=headers)
@@ -403,38 +407,48 @@ def sendMessage(to_id,msg):
   # cursor =cursor.execute(sql_query)
   # conn.commit()   
 
+def myFunc(e):
+  return e['time']
+
 def getMessage(to_id):
   query = """
-  query MyQuery($to_id: uuid_comparison_exp = {}, $user_id: uuid_comparison_exp = {}) {
-    Message(where: {to_id: $to_id, user_id: $user_id}) {
+  query MyQuery($_eq: uuid = "", $_eq1: uuid = "") {
+    Message(where: {to_id: {_eq: $_eq}, user_id: {_eq: $_eq1}}) {
+      message_id
+      time
       to_id
       user_id
-      user_msg,
+      user_msg
+    }
+  }
+  """
+  user = supabase.auth.current_user.id
+  variables = {
+    "_eq": str(to_id),
+    "_eq1": str(user)
+  }
+  data = client.execute(query = query, variables = variables, headers = headers)["data"]["Message"]
+  query = """
+  query MyQuery($_eq: uuid = "", $_eq1: uuid = "") {
+    Message(where: {to_id: {_eq: $_eq}, user_id: {_eq: $_eq1}}) {
       message_id
+      time
+      to_id
+      user_id
+      user_msg
     }
   }
   """
   variables = {
-    "to_id": {"_eq": to_id},
-    "user_id": {"_eq": user}
+    "_eq": str(user),
+    "_eq1": str(to_id)
   }
-  data = client.execute(query = query, variables = variables, headers = headers)["data"]["Message"]
-  query2 = """
-  query MyQuery($to_id: uuid_comparison_exp = {}, $user_id: uuid_comparison_exp = {}) {
-    Message(where: {to_id: $to_id, user_id: $user_id}) {
-      to_id
-      user_id
-      user_msg,
-      message_id
-    }
-  }
-  """
-  variables2 = {
-    "to_id": {"_eq": user},
-    "user_id": {"_eq": to_id}
-  }
-  data2 = client.execute(headers=headers,query=query2,variables=variables2)["data"]["Message"]
-  return data + data2
+  data2 = client.execute(query = query, variables = variables, headers = headers)["data"]["Message"]
+  newData = data + data2
+  newData.sort(key = myFunc)
+  print(newData)
+  return newData  
+
 
 
 def getOrganizerList():
@@ -465,14 +479,40 @@ def home_page():
         print('null')
     return render_template('index.html')
 
-@app.route('/chat')
-def chat():
-  return render_template('chat.html')
+
+@app.route('/followUser/<user_det>')
+def followUser(user_det):
+  FollowUser(user_det)
+  return redirect('/studentList')
+
+@app.route('/chat/<user_det>')
+def chat(user_det):
+  messageList = getMessage(user_det)
+  
+  userList = []
+  user = supabase.auth.current_user.id
+  for msg in messageList:
+    userList.append(str(msg["user_id"])==str(user))
+  form = MessageForm()
+  return render_template('chat.html',userList=userList ,data = messageList,size = len(messageList),user_det=user_det, form =form)
+
+@app.route('/addMsg/<user_det>',methods=['GET','POST'])
+def addMsg(user_det):
+  form  = MessageForm()
+  message = form.message.data
+  data2 = sendMessage(user_det,message)
+  return redirect(url_for('chat',user_det = user_det))
+
+
 
 @app.route('/studentList')
 def studentList():
   data = getStudentList()
-  return render_template('students_list.html', data = data)
+  folowerList =[]
+  for stud in data:
+    print("id of student:",stud['student_id'])
+    folowerList.append(isFollowed(stud['student_id'])) 
+  return render_template('students_list.html', data = data, folowerList = folowerList,size = len(data))
 
 @app.route('/displayProjects/<int:pId>')
 def displayProjects(pId):

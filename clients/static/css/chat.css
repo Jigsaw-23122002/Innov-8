@@ -189,7 +189,7 @@
     transition: all ease 0.5s;
     margin-bottom: 10px;
   }
-  .chat .conversation .field .input-message {
+  .chat .conversation .field #message {
     width: 100%;
     height: 100%;
     border: none;
@@ -200,13 +200,13 @@
     background: var(--bg-secundary);
     transition: all ease 0.5s;
   }
-  .chat .conversation .field .input-message:placeholder-shown ~ .text {
+  .chat .conversation .field #message:placeholder-shown ~ .text {
     display: none;
   }
-  .chat .conversation .field .input-message:not(:placeholder-shown) ~ .plus {
+  .chat .conversation .field #message:not(:placeholder-shown) ~ .plus {
     display: none;
   }
-  .chat .conversation .field .input-message:not(:placeholder-shown) ~ .audio {
+  .chat .conversation .field #message:not(:placeholder-shown) ~ .audio {
     display: none;
   }
   .chat .conversation .field .plus {

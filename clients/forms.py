@@ -10,6 +10,9 @@ class SignUpForm(FlaskForm):
                            'Student', 'Organizer', 'Sponsorer'])
     submit = SubmitField(label="Create account")
 
+class MessageForm(FlaskForm):
+    message = StringField(label="Text", validators=[DataRequired()])
+    submit = SubmitField()
 
 class LoginForm(FlaskForm):
     email = StringField(label="Email", validators=[Email(), DataRequired()])
