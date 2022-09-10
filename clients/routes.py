@@ -13,17 +13,11 @@ from clients.forms import LoginForm, SignUpForm
 # from app.schema import schema
 url: str = os.environ.get("SUPABASE_URL")
 key: str = os.environ.get("SUPABASE_ANON_KEY")
-<<<<<<< HEAD
 supabase: Client = create_client(url, key)
 if(supabase.auth.current_user):
   user = supabase.auth.current_user.id
 else:
   user = -1
-=======
-supabase: Client = create_client("https://yuhrnfjyvvbluvhlpbhm.supabase.co",
-                                 "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl1aHJuZmp5dnZibHV2aGxwYmhtIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NjIyOTQzOTYsImV4cCI6MTk3Nzg3MDM5Nn0.ueJAWAmBuCAE4wvCvSihgiWcS73S8hsbT0CiiICRhdo")
-user = supabase.auth.user()
->>>>>>> 868d674e32c5732fc2ea80e3d63f28a22447cd48
 # print(user)
 
 # Instantiate the client with an endpoint.
@@ -326,8 +320,21 @@ def getStudentList():
 
 def sendMessage(to_id,msg):
   query ="""
-  
+  mutation MyMutation($to_id: uuid = "", $user_id: uuid = "", $user_msg: String = "") {
+    insert_Message(objects: {to_id: $to_id, user_id: $user_id, user_msg: $user_msg}) {
+      returning {
+        message_id
+      }
+    }
+  }  
   """
+  variables = {
+    "to_id": to_id,
+    "user_id": user,
+    "user_msg": msg
+  }
+  data = client.execute(variables=variables,query=query,headers=headers)
+  return data
   # conn = db_connection()
   # cursor = conn.cursor()
   # usr_id = userDetails()[0][0]
@@ -338,14 +345,101 @@ def sendMessage(to_id,msg):
   # cursor =cursor.execute(sql_query)
   # conn.commit()   
 
+def getMessage(to_id):
+  query = """
+  query MyQuery($to_id: uuid_comparison_exp = {}, $user_id: uuid_comparison_exp = {}) {
+    Message(where: {to_id: $to_id, user_id: $user_id}) {
+      to_id
+      user_id
+      user_msg,
+      message_id
+    }
+  }
+  """
+  variables = {
+    "to_id": {"_eq": to_id},
+    "user_id": {"_eq": user}
+  }
+  data = client.execute(query = query, variables = variables, headers = headers)["data"]["Message"]
+  query2 = """
+  query MyQuery($to_id: uuid_comparison_exp = {}, $user_id: uuid_comparison_exp = {}) {
+    Message(where: {to_id: $to_id, user_id: $user_id}) {
+      to_id
+      user_id
+      user_msg,
+      message_id
+    }
+  }
+  """
+  variables2 = {
+    "to_id": {"_eq": user},
+    "user_id": {"_eq": to_id}
+  }
+  data2 = client.execute(headers=headers,query=query2,variables=variables2)["data"]["Message"]
+  return data + data2
+
+
+def getOrganizerList():
+  query ="""
+  query MyQuery {
+    Organizer {
+      organizer_email
+      organizer_id
+      organizer_name
+      organizer_password
+    }
+  }
+  """
+  data = client.execute(query = query,headers=headers)
+  return data
+  # conn=db_connection()
+  # cursor=conn.cursor()
+  # sql_query = '''
+  # SELECT * FROM Organizer '''
+  # cursor =cursor.execute(sql_query)
+  # return cursor.fetchall()
+
 @app.route('/')
 def home_page():
     if supabase.auth.current_user:
         print(supabase.auth.current_user.id)
     else:
         print('null')
-    return render_template('home.html')
+    return render_template('index.html')
 
+@app.route('/chat')
+def chat():
+  return render_template('chat.html')
+
+@app.route('/displayProjects/<int:pId>')
+def displayProjects(pId):
+  query ="""
+  query MyQuery($proj_id: uuid_comparison_exp = {}) {
+    Project(where: {proj_id: $proj_id}) {
+      proj_desc
+      proj_drive_link
+      proj_id
+      proj_rich_text_desc
+      proj_title
+    }
+  }
+  """
+  variables = {
+    "proj_id": {"_eq": pId}
+  }
+  data = client.execute(query = query, headers = headers,variables=variables)
+  print(data)
+  # return render_template('list_of_projects.html', prjDetails= data["data"]["Project"],stdID = user)
+    # conn=db_connection()
+    # cursor=conn.cursor()
+    # sql_query ='''
+    # SELECT * FROM Project where project_id = {}
+    # '''.format(pId)
+    # cursor=cursor.execute(sql_query)
+    # formNew=SearchUserForm()
+    # prjDetails=cursor.fetchall()
+    # stdID=userDetails()[0][1]
+    # return render_template('project_revamp.html', prjDetails=prjDetails, stdID=stdID, formNew=formNew)
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():

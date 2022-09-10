@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../static/dist/css/output.css">
+    <link rel="stylesheet" href="../static/css/edit_profile.css">
     <title>Innov-8</title>
 </head>
 
@@ -66,7 +67,67 @@
         </nav>
     </header>
 
-    <main class="flex-1"></main>
+    <main class="flex-1">
+        <div class="container">
+            <h1 class="heading">
+              Edit Profile Information
+            </h1>
+          
+            <form action="#">
+              <div class="left">
+                <img src="https://www.pngall.com/wp-content/uploads/5/User-Profile-PNG-Clipart.png" alt="">
+                <label for="replaceImage">Replace image</label>
+                <input type="file" name="" id="replaceImage" accept="image/*">
+              </div>
+          
+              <div class="right">
+                <div class="row">
+                  <div class="col">
+                    <label for="fName">
+                      First name
+                    </label>
+                    <input type="text" name="fName" id="fName" placeholder="Your first name">
+                  </div>
+          
+                  <div class="col">
+                    <label for="lName">
+                      Last name
+                    </label>
+                    <input type="text" name="lName" id="lName" placeholder="Your last name">
+                  </div>
+                </div>
+          
+                <div class="col email">
+                  <label for="email">
+                    Email
+                  </label>
+                  <input type="text" name="email" id="email" placeholder="Your email">
+                </div>
+
+                <div class="col bio">
+                    <label for="bio">
+                      Bio
+                    </label>
+                    <input type="text" name="email" id="email" placeholder="Your description goes here">
+                  </div>
+                
+                  <div class="col interests">
+                    <label for="interests">
+                      Interests
+                    </label>
+                    <input type="text" name="interests" id="interests" placeholder="Mention your interests">
+                  </div>
+                  
+                  
+                  
+                <div class="row buttons">
+                  <a href="javascript:alert('You just cancelled your submission')" class="cancel">Cancel</a>
+                  <a href="javascript:alert('You just saved your profile changes')" class="save">Save changes</a>
+                </div>
+              </div>
+            </form>
+          </div>
+    </main>
 
     <footer
         class="p-4 bg-white rounded-lg shadow md:flex md:items-center md:justify-between md:p-6 dark:bg-gray-800 w-full">
