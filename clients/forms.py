@@ -1,6 +1,7 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, SelectField
+from wtforms import StringField, PasswordField, SubmitField, SelectField, DateField, TimeField
 from wtforms.validators import Email, EqualTo, Length, DataRequired, ValidationError
+from flask_mde import Mde, MdeField
 
 
 class SignUpForm(FlaskForm):
@@ -15,3 +16,21 @@ class LoginForm(FlaskForm):
     email = StringField(label="Email", validators=[Email(), DataRequired()])
     password = PasswordField(label="Password", validators=[DataRequired()])
     submit = SubmitField(label="Login")
+
+
+class CreateProjectForm(FlaskForm):
+    name = StringField(label="Project Name", validators=[DataRequired()])
+    description = MdeField(label="Description", validators=[DataRequired()])
+    submit = SubmitField(label="Create project")
+
+class CreateEventForm(FlaskForm):
+    name = StringField(label="Event name", validators=[DataRequired()])
+    location = StringField(label="Event location", validators=[DataRequired()])
+    start_date = DateField(label="Start date of the event", validators=[DataRequired()])
+    end_date = DateField(label="End date of the event", validators=[DataRequired()])
+    start_time = TimeField(label="Start time of the event", validators=[DataRequired()])
+    end_time=TimeField(label="Ennd time of the event", validators=[DataRequired()])
+    type = SelectField(label='Type of event', choices=[
+                           'Exhibition','Seminar','Science Fair'])
+    description = StringField(label="Description of the event", validators=[DataRequired()])
+    submit = SubmitField(label="Create event")

@@ -8,17 +8,21 @@ from flask_sqlalchemy import SQLAlchemy
 from supabase import create_client, Client
 from python_graphql_client import GraphqlClient
 from urllib import request
-from clients.forms import LoginForm, SignUpForm
+from clients import mde
+from clients.forms import CreateEventForm, CreateProjectForm, LoginForm, SignUpForm
+import markdown
+from clients.functions_h import userRegister
+
 
 
 # from app.schema import schema
 url: str = os.environ.get("SUPABASE_URL")
 key: str = os.environ.get("SUPABASE_ANON_KEY")
 supabase: Client = create_client(url, key)
-if(supabase.auth.current_user):
-  user = supabase.auth.current_user.id
+if (supabase.auth.current_user):
+    user = supabase.auth.current_user.id
 else:
-  user = -1
+    user = -1
 # print(user)
 
 # Instantiate the client with an endpoint.
@@ -319,65 +323,10 @@ def getStudentList():
     return data
 
 
-def userRegister(type, email, password, uuid):
-    print(type)
-    print(email)
-    print(password)
-    print(uuid)
-    if type == 'Student':
-        query = """
-        mutation MyMutation($student_id: uuid = "", $student_email: String = "", $student_password: String = "") {
-          insert_Student_one(object: {student_id: $student_id, student_email: $student_email, student_password: $student_password}) {
-            student_id
-          }
-        }
-        """
-        variables = {
-            "student_email": email,
-            "student_id": str(uuid),
-            "student_password": password
-        }
-        data = client.execute(
-            query=query, variables=variables, headers=headers)
-        print(data)
-        return data
 
-    elif type == 'Organizer':
-        query = """
-        mutation MyMutation($organizer_id: uuid = "", $organizer_email: String = "", $organizer_password: String = "") {
-          insert_Organizer_one(object: {organizer_id: $organizer_id, organizer_email: $organizer_email, organizer_password: $organizer_password}) {
-            organizer_id
-          }
-        }
-        """
-        variables = {
-            "organizer_email": email,
-            "organizer_id": str(uuid),
-            "organizer_password": password,
-        }
-        data = client.execute(
-            query=query, variables=variables, headers=headers)
-        return data
 
-    else:
-        query = """
-        mutation MyMutation($sponsor_id: uuid = "", $sponsor_email: String = "", $sponsor_password: String = "") {
-          insert_Sponsor_one(object: {sponsor_id: $sponsor_id, sponsor_email: $sponsor_email, sponsor_password: $sponsor_password}) {
-            sponsor_id
-          }
-        }
-        """
-        variables = {
-            "sponsor_email": email,
-            "sponsor_id": str(uuid),
-            "sponsor_password": password,
-        }
-        data = client.execute(
-            query=query, variables=variables, headers=headers)
-        return data
-
-def sendMessage(to_id,msg):
-  query ="""
+def sendMessage(to_id, msg):
+    query = """
   mutation MyMutation($to_id: uuid = "", $user_id: uuid = "", $user_msg: String = "") {
     insert_Message(objects: {to_id: $to_id, user_id: $user_id, user_msg: $user_msg}) {
       returning {
@@ -386,25 +335,26 @@ def sendMessage(to_id,msg):
     }
   }  
   """
-  variables = {
-    "to_id": to_id,
-    "user_id": user,
-    "user_msg": msg
-  }
-  data = client.execute(variables=variables,query=query,headers=headers)
-  return data
-  # conn = db_connection()
-  # cursor = conn.cursor()
-  # usr_id = userDetails()[0][0]
-  # # tou=current_user.type_of_user
+    variables = {
+        "to_id": to_id,
+        "user_id": user,
+        "user_msg": msg
+    }
+    data = client.execute(variables=variables, query=query, headers=headers)
+    return data
+    # conn = db_connection()
+    # cursor = conn.cursor()
+    # usr_id = userDetails()[0][0]
+    # # tou=current_user.type_of_user
 
-  # sql_query = '''INSERT into Message(user_id,user_msg ,to_id) values ({},"{}",{})'''.format(usr_id,msg,to_id)
-  # print(sql_query)
-  # cursor =cursor.execute(sql_query)
-  # conn.commit()   
+    # sql_query = '''INSERT into Message(user_id,user_msg ,to_id) values ({},"{}",{})'''.format(usr_id,msg,to_id)
+    # print(sql_query)
+    # cursor =cursor.execute(sql_query)
+    # conn.commit()
+
 
 def getMessage(to_id):
-  query = """
+    query = """
   query MyQuery($to_id: uuid_comparison_exp = {}, $user_id: uuid_comparison_exp = {}) {
     Message(where: {to_id: $to_id, user_id: $user_id}) {
       to_id
@@ -414,12 +364,13 @@ def getMessage(to_id):
     }
   }
   """
-  variables = {
-    "to_id": {"_eq": to_id},
-    "user_id": {"_eq": user}
-  }
-  data = client.execute(query = query, variables = variables, headers = headers)["data"]["Message"]
-  query2 = """
+    variables = {
+        "to_id": {"_eq": to_id},
+        "user_id": {"_eq": user}
+    }
+    data = client.execute(query=query, variables=variables,
+                          headers=headers)["data"]["Message"]
+    query2 = """
   query MyQuery($to_id: uuid_comparison_exp = {}, $user_id: uuid_comparison_exp = {}) {
     Message(where: {to_id: $to_id, user_id: $user_id}) {
       to_id
@@ -429,16 +380,17 @@ def getMessage(to_id):
     }
   }
   """
-  variables2 = {
-    "to_id": {"_eq": user},
-    "user_id": {"_eq": to_id}
-  }
-  data2 = client.execute(headers=headers,query=query2,variables=variables2)["data"]["Message"]
-  return data + data2
+    variables2 = {
+        "to_id": {"_eq": user},
+        "user_id": {"_eq": to_id}
+    }
+    data2 = client.execute(headers=headers, query=query2,
+                           variables=variables2)["data"]["Message"]
+    return data + data2
 
 
 def getOrganizerList():
-  query ="""
+    query = """
   query MyQuery {
     Organizer {
       organizer_email
@@ -448,14 +400,15 @@ def getOrganizerList():
     }
   }
   """
-  data = client.execute(query = query,headers=headers)
-  return data
-  # conn=db_connection()
-  # cursor=conn.cursor()
-  # sql_query = '''
-  # SELECT * FROM Organizer '''
-  # cursor =cursor.execute(sql_query)
-  # return cursor.fetchall()
+    data = client.execute(query=query, headers=headers)
+    return data
+    # conn=db_connection()
+    # cursor=conn.cursor()
+    # sql_query = '''
+    # SELECT * FROM Organizer '''
+    # cursor =cursor.execute(sql_query)
+    # return cursor.fetchall()
+
 
 @app.route('/')
 def home_page():
@@ -465,13 +418,15 @@ def home_page():
         print('null')
     return render_template('index.html')
 
+
 @app.route('/chat')
 def chat():
-  return render_template('chat.html')
+    return render_template('chat.html')
+
 
 @app.route('/displayProjects/<int:pId>')
 def displayProjects(pId):
-  query ="""
+    query = """
   query MyQuery($proj_id: uuid_comparison_exp = {}) {
     Project(where: {proj_id: $proj_id}) {
       proj_desc
@@ -482,12 +437,12 @@ def displayProjects(pId):
     }
   }
   """
-  variables = {
-    "proj_id": {"_eq": pId}
-  }
-  data = client.execute(query = query, headers = headers,variables=variables)
-  print(data)
-  # return render_template('list_of_projects.html', prjDetails= data["data"]["Project"],stdID = user)
+    variables = {
+        "proj_id": {"_eq": pId}
+    }
+    data = client.execute(query=query, headers=headers, variables=variables)
+    print(data)
+    # return render_template('list_of_projects.html', prjDetails= data["data"]["Project"],stdID = user)
     # conn=db_connection()
     # cursor=conn.cursor()
     # sql_query ='''
@@ -498,6 +453,7 @@ def displayProjects(pId):
     # prjDetails=cursor.fetchall()
     # stdID=userDetails()[0][1]
     # return render_template('project_revamp.html', prjDetails=prjDetails, stdID=stdID, formNew=formNew)
+
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
@@ -739,3 +695,23 @@ def list_events():
 def logout():
     supabase.auth.sign_out()
     return redirect('/')
+
+
+@app.route('/create_project', methods=['GET', 'POST'])
+def create_project():
+    form = CreateProjectForm()
+    if form.validate_on_submit():
+        html = markdown.markdown(
+            form.description.data,
+            extensions=['nl2br', 'smarty', 'pymdownx.tilde', 'extra']
+        )
+        
+  
+    return render_template('create_project.html', form=form,mde=mde)
+
+@app.route('/create_event',methods=['GET','POST'])
+def create_event():
+  form=CreateEventForm()
+  # if form.validate_on_submit():
+    
+  return render_template('create_event.html',form=form)
