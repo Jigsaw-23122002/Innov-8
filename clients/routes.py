@@ -374,6 +374,19 @@ def userRegister(type, email, password, uuid):
             query=query, variables=variables, headers=headers)
         return data
 
+def sendMessage(to_id,msg):
+  query ="""
+  
+  """
+  # conn = db_connection()
+  # cursor = conn.cursor()
+  # usr_id = userDetails()[0][0]
+  # # tou=current_user.type_of_user
+
+  # sql_query = '''INSERT into Message(user_id,user_msg ,to_id) values ({},"{}",{})'''.format(usr_id,msg,to_id)
+  # print(sql_query)
+  # cursor =cursor.execute(sql_query)
+  # conn.commit()   
 
 @app.route('/')
 def home_page():
