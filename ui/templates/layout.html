@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/css/chat.css">
     <link rel="stylesheet" href="../static/dist/css/output.css">
     <title>Innov-8</title>
 </head>
@@ -65,8 +66,7 @@
             </div>
         </nav>
     </header>
-
-    <main class="flex-1"></main>
+    {% block content %}{% endblock %}
 
     <footer
         class="p-4 bg-white rounded-lg shadow md:flex md:items-center md:justify-between md:p-6 dark:bg-gray-800 w-full">
@@ -91,7 +91,7 @@
             </li>
         </ul>
     </footer>
-
+    <script src="../static/js/chat.js"></script>
 </body>
 
 </html>
