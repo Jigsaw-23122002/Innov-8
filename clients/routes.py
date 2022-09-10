@@ -15,7 +15,10 @@ from python_graphql_client import GraphqlClient
 url: str = os.environ.get("SUPABASE_URL")
 key: str = os.environ.get("SUPABASE_ANON_KEY")
 supabase: Client = create_client(url, key)
-user = supabase.auth.user()
+if(supabase.auth.current_user):
+  user = supabase.auth.current_user.id
+else:
+  user = -1
 # print(user)
 
 # Instantiate the client with an endpoint.
@@ -299,6 +302,20 @@ def getStudentList():
   """
   data  = client.execute(query=query,headers=headers)
   return data
+
+def sendMessage(to_id,msg):
+  query ="""
+  
+  """
+  # conn = db_connection()
+  # cursor = conn.cursor()
+  # usr_id = userDetails()[0][0]
+  # # tou=current_user.type_of_user
+
+  # sql_query = '''INSERT into Message(user_id,user_msg ,to_id) values ({},"{}",{})'''.format(usr_id,msg,to_id)
+  # print(sql_query)
+  # cursor =cursor.execute(sql_query)
+  # conn.commit()   
 
 @app.route('/')
 def home():
