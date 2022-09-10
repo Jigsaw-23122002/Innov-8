@@ -320,7 +320,7 @@ def getStudentList():
   }
   """
     data = client.execute(query=query, headers=headers)
-    return data
+    return data["data"]["Student"]
 
 
 
@@ -423,6 +423,11 @@ def home_page():
 def chat():
     return render_template('chat.html')
 
+
+@app.route('/studentList')
+def studentList():
+  data = getStudentList()
+  return render_template('students_list.html', data = data)
 
 @app.route('/displayProjects/<int:pId>')
 def displayProjects(pId):
