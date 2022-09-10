@@ -1,184 +1,102 @@
-{% extends "layout.html" %} {% block content %}
-<main>
-  <div id="chat" class="chat">
-    <div class="conversation">
-      <div class="head">
-        <div class="person avatar">
-          <div class="online"></div>
-        </div>
-        <h3 class="person-name">Millie</h3>
-        <div class="buttons">
-          <svg
-            title="Call"
-            class="audio-call icon"
-            stroke="currentColor"
-            fill="none"
-            stroke-width="2"
-            viewBox="0 0 24 24"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            height="1.25em"
-            width="1.25em"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"
-            ></path>
-          </svg>
-          <svg
-            title="Video-call"
-            class="video-call icon"
-            stroke="currentColor"
-            fill="none"
-            stroke-width="2"
-            viewBox="0 0 24 24"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            height="1.25em"
-            width="1.25em"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <polygon points="23 7 16 12 23 17 23 7"></polygon>
-            <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
-          </svg>
-          <svg
-            id="button-options"
-            class="button-option icon"
-            stroke="currentColor"
-            fill="none"
-            stroke-width="2"
-            viewBox="0 0 24 24"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            height="1.25em"
-            width="1.25em"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <circle cx="12" cy="12" r="10"></circle>
-            <line x1="12" y1="16" x2="12" y2="12"></line>
-            <line x1="12" y1="8" x2="12.01" y2="8"></line>
-          </svg>
-        </div>
-      </div>
+<!DOCTYPE html>
+<html lang="en">
 
-      <div id="messages" class="messages">
-        <div class="time">Today</div>
-        <div class="msg-text">
-          <span class="text">Hello</span>
-        </div>
-        <div class="msg-text">
-          <span class="text">How are you doing?</span>
-        </div>
-        <div class="msg-text owner">
-          <span class="text">Fine</span>
-        </div>
-        <div class="msg-text owner">
-          <span class="text">You?</span>
-        </div>
-        <div class="msg-text">
-          <span class="text">Good</span>
-        </div>
-      </div>
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../static/css/chat.css">
+  <link rel="stylesheet" href="../static/dist/css/output.css">
+  <title>Innov-8</title>
+</head>
 
-      <div class="field">
-        <svg
-          class="emoji icon"
-          stroke="currentColor"
-          fill="none"
-          stroke-width="0"
-          viewBox="0 0 24 24"
-          height="1em"
-          width="1em"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-          ></path>
-        </svg>
-        <input
-          id="input-message"
-          class="input-message"
-          type="text"
-          placeholder="Type something..."
-        />
-        <div class="icon plus">
-          <svg
-            stroke="currentColor"
-            fill="none"
-            stroke-width="2"
-            viewBox="0 0 24 24"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            height="1em"
-            width="1em"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"
-            ></path>
-          </svg>
+<body class="flex flex-col min-h-screen">
+  <header>
+    <nav class="bg-white border-gray-200 px-4 lg:px-6 py-2.5 dark:bg-gray-800">
+      <div class="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
+        <a href="/" class="flex items-center">
+          <span class="self-center text-xl font-semibold whitespace-nowrap dark:text-white">Innov-8</span>
+        </a>
+        <div class="flex items-center lg:order-2">
+          <a href="#"
+            class="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800">Login</a>
+          <button data-collapse-toggle="mobile-menu-2" type="button"
+            class="inline-flex items-center p-2 ml-1 text-sm text-gray-500 rounded-lg lg:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+            aria-controls="mobile-menu-2" aria-expanded="false"
+            onClick="document.getElementById('mobile-menu-2').classList.toggle('hidden')">
+            <span class=" sr-only">Open main menu</span>
+            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+              <path fill-rule="evenodd"
+                d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
+                clip-rule="evenodd"></path>
+            </svg>
+            <svg class="hidden w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+              <path fill-rule="evenodd"
+                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                clip-rule="evenodd"></path>
+            </svg>
+          </button>
         </div>
-        <div id="send-text" class="icon send text">
-          <svg
-            stroke="currentColor"
-            fill="none"
-            stroke-width="2"
-            viewBox="0 0 24 24"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            height="1em"
-            width="1em"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <line x1="22" y1="2" x2="11" y2="13"></line>
-            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
-          </svg>
-        </div>
-        <div id="send-audio" class="icon send audio">
-          <svg
-            stroke="currentColor"
-            fill="none"
-            stroke-width="2"
-            viewBox="0 0 24 24"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            height="1em"
-            width="1em"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"
-            ></path>
-            <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
-            <line x1="12" y1="19" x2="12" y2="23"></line>
-            <line x1="8" y1="23" x2="16" y2="23"></line>
-          </svg>
+        <div class="hidden justify-between items-center w-full lg:flex lg:w-auto lg:order-1" id="mobile-menu-2">
+          <ul class="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0">
+            <li>
+              <a href="#"
+                class="block py-2 pr-4 pl-3 text-white rounded bg-primary-700 lg:bg-transparent lg:text-primary-700 lg:p-0 dark:text-white"
+                aria-current="page">Home</a>
+            </li>
+            <li>
+              <a href="#"
+                class="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">Events</a>
+            </li>
+            <li>
+              <a href="#"
+                class="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">Posts</a>
+            </li>
+            <li>
+              <a href="#"
+                class="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">Messages</a>
+            </li>
+            <li>
+              <a href="#"
+                class="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">Profile</a>
+            </li>
+          </ul>
         </div>
       </div>
-    </div>
+    </nav>
+  </header>
 
-    <div id="options" class="options">
-      <div class="head">
-        <div id="close-options" class="close icon">
-          <svg
-            stroke="currentColor"
-            fill="none"
-            stroke-width="2"
-            viewBox="0 0 24 24"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            height="2em"
-            width="2em"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <line x1="19" y1="12" x2="5" y2="12"></line>
-            <polyline points="12 19 5 12 12 5"></polyline>
-          </svg>
+  <main>
+    <div id="chat" class="chat">
+      <div class="conversation">
+        <div class="head">
+          <div class="person avatar">
+            <div class="online"></div>
+          </div>
+          <h3 class="person-name">Millie</h3>
+          <div class="buttons">
+            <svg title="Call" class="audio-call icon" stroke="currentColor" fill="none" stroke-width="2"
+              viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="1.25em" width="1.25em"
+              xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z">
+              </path>
+            </svg>
+            <svg title="Video-call" class="video-call icon" stroke="currentColor" fill="none" stroke-width="2"
+              viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="1.25em" width="1.25em"
+              xmlns="http://www.w3.org/2000/svg">
+              <polygon points="23 7 16 12 23 17 23 7"></polygon>
+              <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
+            </svg>
+            <svg id="button-options" class="button-option icon" stroke="currentColor" fill="none" stroke-width="2"
+              viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="1.25em" width="1.25em"
+              xmlns="http://www.w3.org/2000/svg">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="16" x2="12" y2="12"></line>
+              <line x1="12" y1="8" x2="12.01" y2="8"></line>
+            </svg>
+          </div>
         </div>
-      </div>
 
     <main>
         <div id="chat" class="chat">
@@ -294,108 +212,87 @@
             </div>
             <p class="title">Profile</p>
           </div>
-          <div class="button">
-            <div class="icon">
-              <svg
-                stroke="currentColor"
-                fill="none"
-                stroke-width="2"
-                viewBox="0 0 24 24"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                height="1em"
-                width="1em"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
-                <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
-              </svg>
-            </div>
-            <p class="title">Mute</p>
+        </div>
+      </div>
+
+      <div id="options" class="options">
+        <div class="head">
+          <div id="close-options" class="close icon">
+            <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round"
+              stroke-linejoin="round" height="2em" width="2em" xmlns="http://www.w3.org/2000/svg">
+              <line x1="19" y1="12" x2="5" y2="12"></line>
+              <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
           </div>
         </div>
-        <hr />
-        <div class="details">
-          <label class="search-field">
-            <div class="icon">
-              <svg
-                stroke="currentColor"
-                fill="none"
-                stroke-width="2"
-                viewBox="0 0 24 24"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                height="1em"
-                width="1em"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <circle cx="11" cy="11" r="8"></circle>
-                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-              </svg>
-            </div>
-            <input
-              id="search"
-              class="search"
-              type="text"
-              placeholder="Search"
-            />
-          </label>
-          <label class="dark-mode">
-            <span class="label">Dark Mode</span>
-            <input id="input-dark" class="input-dark" type="checkbox" />
-            <div class="toggle">
-              <div class="circle"></div>
-            </div>
-          </label>
-          <div class="theme">
-            <span class="label">Theme</span>
-            <div class="colors">
-              <div id="color-blue" class="color blue"></div>
-              <div id="color-red" class="color red"></div>
-              <div id="color-green" class="color green"></div>
-              <div id="color-purple" class="color purple"></div>
+
+        <div class="info">
+          <div class="person photo">
+            <div class="online"></div>
+          </div>
+          <h2 class="name">Millie</h2>
+          <div class="buttons">
+
+            <div class="button">
+              <div class="icon">
+                <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round"
+                  stroke-linejoin="round" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+              </div>
+              <p class="title">Profile</p>
             </div>
           </div>
-          <div class="media">
-            <span class="label">
-              <svg
-                stroke="currentColor"
-                fill="none"
-                stroke-width="0"
-                viewBox="0 0 24 24"
-                height="1em"
-                width="1em"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
-                ></path>
-              </svg>
-              <span>Shared photos</span>
-            </span>
-            <div class="photos">
-              <img
-                class="img"
-                src="http://vcfadocs.s3.amazonaws.com/GoogleDrive/mcfoldershare1.png"
-              />
-              <img
-                class="img"
-                src="https://storage.googleapis.com/gweb-uniblog-publish-prod/original_images/tenor_1.gif"
-              />
-              <img
-                class="img"
-                src="https://lh3.googleusercontent.com/Nku4kDA1oSwXNMerXqXcDjlq3Lu0HNs3lDA2Sto6psNTigBSeIy2dB3lbxCPwqfmWZE=w720-rwa"
-              />
-            </div>
-            <span class="view-more">View more</span>
+          <hr />
+          <div class="details">
+            <label class="search-field">
+              <div class="icon">
+                <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round"
+                  stroke-linejoin="round" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+              </div>
+              <input id="search" class="search" type="text" placeholder="Search" />
+            </label>
+            <label class="dark-mode">
+              <span class="label">Dark Mode</span>
+              <input id="input-dark" class="input-dark" type="checkbox" />
+              <div class="toggle">
+                <div class="circle"></div>
+              </div>
+            </label>
           </div>
         </div>
       </div>
     </div>
-  </div>
-</main>
+  </main>
 
-{% endblock content %}
+  <footer
+    class="p-4 bg-white rounded-lg shadow md:flex md:items-center md:justify-between md:p-6 dark:bg-gray-800 w-full">
+    <span class="text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2022 <a href="/"
+        class="hover:underline">Innov-8</a>.
+    </span>
+    <ul class="flex flex-wrap items-center mt-3 text-sm text-gray-500 dark:text-gray-400 sm:mt-0">
+      <li>
+        <a href="#" class="mr-4 hover:underline md:mr-6 ">Home</a>
+      </li>
+      <li>
+        <a href="#" class="mr-4 hover:underline md:mr-6">Events</a>
+      </li>
+      <li>
+        <a href="#" class="mr-4 hover:underline md:mr-6">Posts</a>
+      </li>
+      <li>
+        <a href="#" class="mr-4 hover:underline md:mr-6">Messages</a>
+      </li>
+      <li>
+        <a href="#" class="hover:underline">Profile</a>
+      </li>
+    </ul>
+  </footer>
+  <script src="../static/js/chat.js"></script>
+</body>
+
+</html>
