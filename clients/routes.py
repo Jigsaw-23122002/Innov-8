@@ -13,9 +13,17 @@ from clients.forms import LoginForm, SignUpForm
 # from app.schema import schema
 url: str = os.environ.get("SUPABASE_URL")
 key: str = os.environ.get("SUPABASE_ANON_KEY")
+<<<<<<< HEAD
+supabase: Client = create_client(url, key)
+if(supabase.auth.current_user):
+  user = supabase.auth.current_user.id
+else:
+  user = -1
+=======
 supabase: Client = create_client("https://yuhrnfjyvvbluvhlpbhm.supabase.co",
                                  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl1aHJuZmp5dnZibHV2aGxwYmhtIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NjIyOTQzOTYsImV4cCI6MTk3Nzg3MDM5Nn0.ueJAWAmBuCAE4wvCvSihgiWcS73S8hsbT0CiiICRhdo")
 user = supabase.auth.user()
+>>>>>>> 868d674e32c5732fc2ea80e3d63f28a22447cd48
 # print(user)
 
 # Instantiate the client with an endpoint.
@@ -315,6 +323,20 @@ def getStudentList():
     data = client.execute(query=query, headers=headers)
     return data
 
+
+def sendMessage(to_id,msg):
+  query ="""
+  
+  """
+  # conn = db_connection()
+  # cursor = conn.cursor()
+  # usr_id = userDetails()[0][0]
+  # # tou=current_user.type_of_user
+
+  # sql_query = '''INSERT into Message(user_id,user_msg ,to_id) values ({},"{}",{})'''.format(usr_id,msg,to_id)
+  # print(sql_query)
+  # cursor =cursor.execute(sql_query)
+  # conn.commit()   
 
 @app.route('/')
 def home_page():
