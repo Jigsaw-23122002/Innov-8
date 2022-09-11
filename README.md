@@ -51,6 +51,8 @@
 <a href="https://www.w3.org/TR/CSS/" title="CSS3"><img src="https://github.com/get-icon/geticon/raw/master/icons/css-3.svg" alt="CSS3" width="31px" height="31px"></a>
 <a href="https://tailwindcss.com/" title="Tailwind"><img src="https://github.com/get-icon/geticon/blob/master/icons/tailwindcss-icon.svg" alt="Tailwind" width="31px" height="31px"></a>
 <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" title="JavaScript"><img src="https://github.com/get-icon/geticon/raw/master/icons/javascript.svg" alt="JavaScript" width="31px" height="31px"></a>
+<a href="https://graphql.org/" title="GraphQL"><img src="https://github.com/get-icon/geticon/blob/master/icons/graphql.svg" alt="GraphQL" width="31px" height="31px"></a>
+<a href="https://www.postgresql.org/" title="JavaScript"><img src="https://github.com/get-icon/geticon/blob/master/icons/postgresql.svg" alt="PostgreSQL" width="31px" height="31px"></a>
 
 ## 📈Progress
 
