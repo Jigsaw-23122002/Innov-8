@@ -23,16 +23,15 @@
               <span class="font-medium text-gray-900 dark:text-white"
                 >{{user_detail[dd]}}</span
               >
-              likes
-              <span class="font-medium text-gray-900 dark:text-white"
-                >Bonnie Green's</span
-              >
-              post in
+
+              posted
               <span class="font-medium text-gray-900 dark:text-white">
-                How to start with Flowbite library</span
+                {{det[dd]['Project']['proj_title']}}</span
               >
             </div>
-            <div class="text-sm font-normal">{{det[dd]['Project']['proj_desc']}}</div>
+            <div class="text-sm font-normal">
+              {{det[dd]['Project']['proj_desc'][:150]}}
+            </div>
             <span
               class="inline-flex items-center text-xs font-normal text-gray-500 dark:text-gray-400"
             >
