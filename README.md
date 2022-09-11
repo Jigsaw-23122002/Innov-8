@@ -114,7 +114,9 @@ Mentor access level
 
 ## ⚙Database Schema
 
-[SQL Schema Diagram](https://drawsql.app/dcodestarbots/diagrams/innov-8)
+[SQL Schema Diagram](https://www.yworks.com/yed-live/?file=https://gist.githubusercontent.com/saRvaGnyA/eb85dda5d6bbed035538cf064a5a317f/raw/561274973fa64a762043a6367cd501fbb85edf11/Imported%20Document)  
+
+![exported_from_idea drawio (1)](https://user-images.githubusercontent.com/24823649/189525395-6386ac1a-ee41-4b48-ab53-87f94818a2ad.png)
 
 ## 🛠Project Setup
 
