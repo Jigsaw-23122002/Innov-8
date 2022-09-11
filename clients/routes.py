@@ -483,10 +483,10 @@ def timeline():
 @app.route('/')
 def home_page():
     if supabase.auth.current_user:
-        print(supabase.auth.current_user.id)
+      print(supabase.auth.current_user.id)
+      return redirect('/editprofilePage')
     else:
-        print('null')
-    return render_template('landing.html')
+      return render_template('landing.html')
 
 def getListOfSponsoredEvents():
   query = """

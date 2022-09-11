@@ -18,15 +18,15 @@
     
       <div class="right">
         <div class="row">
-          <div class="col">{{ form.fName() }}</div>
-          <div class="col">{{ form.lName() }}</div>
+          <div class="col">{{ form.fName(placeholder="First Name") }}</div>
+          <div class="col">{{ form.lName(placeholder="Last Name") }}</div>
         </div>
 
-        <div class="col email">{{ form.email() }}</div>
+        <div class="col email">{{ form.email(placeholder="Email") }}</div>
 
-        <div class="col bio">{{ form.bio() }}</div>
+        <div class="col bio">{{ form.bio(placeholder="A short Bio") }}</div>
 
-        <div class="col interests">{{ form.interest() }}</div>
+        <div class="col interests">{{ form.interest(placeholder="Comma-seperated Interests") }}</div>
 
         <div class="row buttons">
           <a
@@ -34,12 +34,8 @@
             class="cancel"
             >Cancel</a
           >
-          {{ form.save() }}
-          <a
-            href="javascript:alert('You just saved your profile changes')"
-            class="save"
-            >Save changes</a
-          >
+          {{ form.save(class_="save") }}
+          
         </div>
       </div>
     </form>
