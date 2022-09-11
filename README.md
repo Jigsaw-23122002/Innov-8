@@ -42,7 +42,7 @@
 
 - [GitHub Repo](https://github.com/Jigsaw-23122002/Innov-8)
 - [Devfolio Submission]()
-- [Video]()
+- [Video](https://youtu.be/M7Pjl1-6GBM)
 
 ## 🤖Tech-Stack
 <a href="https://www.python.org/" title="Python"><img src="https://github.com/get-icon/geticon/raw/master/icons/python.svg" alt="Python" width="31px" height="31px"></a>
