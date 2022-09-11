@@ -1,4 +1,5 @@
 {% block content %}
+<link rel="stylesheet" href="{{url_for('static',filename = 'css/login.css')}}" />
 
 <div class="flex flex-col justify-center items-center mt-5">
   <div
@@ -11,8 +12,8 @@
     <p>{{ form.hidden_tag() }}</p>
     <form class="space-y-6" method="POST">
       {{ form.csrf_token }}
-      <h5 class="text-xl font-medium text-gray-900 dark:text-white">
-        Sign Up to our platform
+      <h5 class="text-xl font-medium text-gray-900 dark:text-white text-center">
+        Sign Up to Innov-8
       </h5>
       <div>
         <label
