@@ -11,9 +11,11 @@ class SignUpForm(FlaskForm):
                            'Student', 'Organizer', 'Sponsorer'])
     submit = SubmitField(label="Create account")
 
+
 class MessageForm(FlaskForm):
     message = StringField(label="Text", validators=[DataRequired()])
     submit = SubmitField()
+
 
 class LoginForm(FlaskForm):
     email = StringField(label="Email", validators=[Email(), DataRequired()])
@@ -54,19 +56,22 @@ class EventRegistration(FlaskForm):
 
 class redirectCreateProject(FlaskForm):
     submit = SubmitField(label="Submit Project")
+
+
 class SearchForm(FlaskForm):
     messageText = StringField(validators=[DataRequired()])
     Search = SubmitField()
+
 
 class EditProfile(FlaskForm):
     fName = StringField(validators=[DataRequired()])
     lName = StringField(validators=[DataRequired()])
     email = StringField(label="Email", validators=[Email(), DataRequired()])
-    bio  = StringField(validators=[DataRequired()])
+    bio = StringField(validators=[DataRequired()])
     interest = StringField(validators=[DataRequired()])
     save = SubmitField()
+
 
 class SponsorshipForm(FlaskForm):
     sponsor = SubmitField()
     sponsored = SubmitField()
-
