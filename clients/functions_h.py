@@ -112,7 +112,7 @@ def isOrganizer(uuid):
         return False
 
 
-def getEvents():
+def getEvents2():
     query = """
     query MyQuery {
         Event {
