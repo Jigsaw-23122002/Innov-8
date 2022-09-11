@@ -9,10 +9,9 @@ from supabase import create_client, Client
 from python_graphql_client import GraphqlClient
 from urllib import request
 from clients import mde
-from clients.forms import CreateEventForm, CreateProjectForm, LoginForm, SignUpForm
+from clients.forms import CreateEventForm, CreateProjectForm, EventRegistration, LoginForm, SignUpForm, redirectCreateProject
 import markdown
-from clients.functions_h import userRegister
-
+from clients.functions_h import createTeam, eventDetails, isOrganizer, isProjectSubmitted, isSubmitted, participate, submitProject, teamDetails, userRegister, createEvent, isOrganizer, getEvents, checkRegistration, findParticipantByEmail
 
 
 # from app.schema import schema
@@ -160,25 +159,6 @@ def isSponsored():
     return data
 
 
-def getEvents():
-    query = """
-  query MyQuery {
-    Event {
-      event_description
-      event_end_date
-      event_id
-      event_location
-      event_type_id
-      organizer_id
-      team_id
-      event_start_date
-    }
-  }
-  """
-    data = client.execute(query=query, headers=headers)
-    return data
-
-
 def searchOrganizer(userId):
     query = """
   query MyQuery($organizer_id: uuid_comparison_exp = {}) {
@@ -323,8 +303,6 @@ def getStudentList():
     return data["data"]["Student"]
 
 
-
-
 def sendMessage(to_id, msg):
     query = """
   mutation MyMutation($to_id: uuid = "", $user_id: uuid = "", $user_msg: String = "") {
@@ -426,8 +404,9 @@ def chat():
 
 @app.route('/studentList')
 def studentList():
-  data = getStudentList()
-  return render_template('students_list.html', data = data)
+    data = getStudentList()
+    return render_template('students_list.html', data=data)
+
 
 @app.route('/displayProjects/<int:pId>')
 def displayProjects(pId):
@@ -653,70 +632,92 @@ def list_projects():
     return render_template('list_of_projects.html', data=data)
 
 
-@app.route('/list_events')
-def list_events():
-    # Fetch the list of events available for participation
-    data = [{
-        'event_uuid': 'sunderbans',
-        'event_name': 'HackOdisha 2.0',
-        'event_sponsorers': [
-            'Amazon',
-            'Flipkart',
-            'Firebase'
-        ],
-        'event_description':'An event description is copy that aims to tell your potential attendees what will be happening at the event, who will be speaking, and what they will get out of attending. Good event descriptions can drive attendance to events and also lead to more media coverage.',
-    }, {
-        'event_uuid': 'sunderbans',
-        'event_name': 'HackOdisha 2.0',
-        'event_sponsorers': [
-            'Amazon',
-            'Flipkart',
-            'Firebase'
-        ],
-        'event_description':'An event description is copy that aims to tell your potential attendees what will be happening at the event, who will be speaking, and what they will get out of attending. Good event descriptions can drive attendance to events and also lead to more media coverage.',
-    }, {
-        'event_uuid': 'sunderbans',
-        'event_name': 'HackOdisha 2.0',
-        'event_sponsorers': [
-            'Amazon',
-            'Flipkart',
-            'Firebase'
-        ],
-        'event_description':'An event description is copy that aims to tell your potential attendees what will be happening at the event, who will be speaking, and what they will get out of attending. Good event descriptions can drive attendance to events and also lead to more media coverage.',
-    }, {
-        'event_uuid': 'sunderbans',
-        'event_name': 'HackOdisha 2.0',
-        'event_sponsorers': [
-            'Amazon',
-            'Flipkart',
-            'Firebase'
-        ],
-        'event_description':'An event description is copy that aims to tell your potential attendees what will be happening at the event, who will be speaking, and what they will get out of attending. Good event descriptions can drive attendance to events and also lead to more media coverage.',
-    }]
-    return render_template('list_of_events.html', data=data)
-
-
 @app.route('/logout')
 def logout():
     supabase.auth.sign_out()
     return redirect('/')
 
 
-@app.route('/create_project', methods=['GET', 'POST'])
-def create_project():
-    form = CreateProjectForm()
-    if form.validate_on_submit():
-        html = markdown.markdown(
-            form.description.data,
-            extensions=['nl2br', 'smarty', 'pymdownx.tilde', 'extra']
-        )
-        
-  
-    return render_template('create_project.html', form=form,mde=mde)
+@app.route('/create_project/<teamID>', methods=['GET', 'POST'])
+def create_project(teamID):
+    if isProjectSubmitted(teamID) == False:
+        form = CreateProjectForm()
+        if form.validate_on_submit():
+            html = markdown.markdown(
+                form.description.data,
+                extensions=['nl2br', 'smarty', 'pymdownx.tilde', 'extra']
+            )
+            submitProject(form.name.data, form.description.data, teamID)
+            return redirect('/events')
+        return render_template('create_project.html', form=form, mde=mde)
+    else:
+      return redirect('error')
+      
 
-@app.route('/create_event',methods=['GET','POST'])
+
+@app.route('/error')
+def error():
+    return render_template('404.html')
+
+
+@app.route('/create_event', methods=['GET', 'POST'])
 def create_event():
-  form=CreateEventForm()
-  # if form.validate_on_submit():
-    
-  return render_template('create_event.html',form=form)
+    if supabase.auth.current_user:
+        if isOrganizer(supabase.auth.current_user.id):
+            form = CreateEventForm()
+            if form.validate_on_submit():
+                data = createEvent(form.name.data, form.location.data, form.start_date.data, form.start_time.data,
+                                   form.end_date.data, form.end_time.data, form.type.data, form.description.data, supabase.auth.current_user.id)
+            return render_template('create_event.html', form=form)
+        else:
+            return redirect('/error')
+    else:
+        return redirect('/error')
+
+
+@app.route('/events')
+def events():
+    data = getEvents()
+    return render_template('events.html', data=data)
+
+
+@app.route('/register/<eventID>', methods=['GET', 'POST'])
+def register(eventID):
+    data = checkRegistration(str(supabase.auth.current_user.id), str(eventID))
+    if len(data['data']['Participants']) > 0:
+        teamID = data['data']['Participants'][0]['team_id']
+        event_details = eventDetails(str(eventID))
+        team_details = teamDetails(str(teamID))
+        form = redirectCreateProject()
+
+        if form.validate_on_submit():
+            return redirect(f'/create_project/{str(teamID)}')
+
+        return render_template('team_event.html', event_details=event_details, team_details=team_details, form=form)
+
+    else:
+        form = EventRegistration()
+        if form.validate_on_submit():
+            participants = [str(supabase.auth.current_user.id)]
+
+            res = findParticipantByEmail(form.email_01.data)
+            if len(res['data']['Student']) > 0 and len(checkRegistration(res['data']['Student'][0]['student_id'], eventID)['data']['Participants']) == 0:
+                participants.append(res['data']['Student'][0]['student_id'])
+
+            res = findParticipantByEmail(form.email_02.data)
+            if len(res['data']['Student']) > 0 and len(checkRegistration(res['data']['Student'][0]['student_id'], eventID)['data']['Participants']) == 0:
+                participants.append(res['data']['Student'][0]['student_id'])
+
+            res = findParticipantByEmail(form.email_03.data)
+            if len(res['data']['Student']) > 0 and len(checkRegistration(res['data']['Student'][0]['student_id'], eventID)['data']['Participants']) == 0:
+                participants.append(res['data']['Student'][0]['student_id'])
+
+            print(participants)
+            teamID = createTeam(eventID)
+            print(teamID)
+            for uuid in participants:
+                ress = participate(str(uuid), eventID, str(
+                    teamID['data']['insert_Team_one']['team_id']))
+                print(ress)
+
+        return render_template('register_for_event.html', form=form)

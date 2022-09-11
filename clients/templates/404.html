@@ -113,131 +113,29 @@
     </header>
 
     <main class="flex-1">
-      <section class="bg-gray-200 dark:bg-gray-900">
-        <div class="py-8 lg:py-16 px-4 mx-auto max-w-screen-md">
-          <h2
-            class="mb-4 text-4xl tracking-tight font-extrabold text-center text-gray-900 dark:text-white"
-          >
-            Create Event
-          </h2>
-          <p
-            class="mb-8 lg:mb-16 font-light text-center text-gray-500 dark:text-gray-400 sm:text-xl"
-          >
-            Have a new event at your school? Register it here, and spread the
-            word!
-          </p>
-          <form method="POST" class="space-y-8">
-            {{form.csrf_token }}
-            <div>
-              <label
-                for="name"
-                class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                >Event Name</label
-              >
-              {{ form.name(class="shadow-sm bg-gray-50 border border-gray-300
-              text-gray-900 text-sm rounded-lg focus:ring-primary-500
-              focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700
-              dark:border-gray-600 dark:placeholder-gray-400 dark:text-white
-              dark:focus:ring-primary-500 dark:focus:border-primary-500
-              dark:shadow-sm-light")}}
-            </div>
-            <div>
-              <label
-                for="location"
-                class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                >Event Location</label
-              >
-              {{ form.location(class="block p-3 w-full text-sm text-gray-900
-              bg-gray-50 rounded-lg border border-gray-300 shadow-sm
-              focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700
-              dark:border-gray-600 dark:placeholder-gray-400 dark:text-white
-              dark:focus:ring-primary-500 dark:focus:border-primary-500
-              dark:shadow-sm-light") }}
-            </div>
-            <div>
-              <label
-                for="startDate"
-                class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                >Event Start Date</label
-              >
-              {{ form.start_date(class="block p-3 w-full text-sm text-gray-900
-              bg-gray-50 rounded-lg border border-gray-300 shadow-sm
-              focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700
-              dark:border-gray-600 dark:placeholder-gray-400 dark:text-white
-              dark:focus:ring-primary-500 dark:focus:border-primary-500
-              dark:shadow-sm-light") }}
-            </div>
-            <div>
-              <label
-                for="startTime"
-                class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                >Event Start Time</label
-              >
-              {{ form.start_time(class="block p-3 w-full text-sm text-gray-900
-              bg-gray-50 rounded-lg border border-gray-300 shadow-sm
-              focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700
-              dark:border-gray-600 dark:placeholder-gray-400 dark:text-white
-              dark:focus:ring-primary-500 dark:focus:border-primary-500
-              dark:shadow-sm-light") }}
-            </div>
-            <div>
-              <label
-                for="endDate"
-                class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                >Event End Date</label
-              >
-              {{ form.end_date(class="block p-3 w-full text-sm text-gray-900
-              bg-gray-50 rounded-lg border border-gray-300 shadow-sm
-              focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700
-              dark:border-gray-600 dark:placeholder-gray-400 dark:text-white
-              dark:focus:ring-primary-500 dark:focus:border-primary-500
-              dark:shadow-sm-light") }}
-            </div>
-            <div>
-              <label
-                for="endTime"
-                class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                >Event End Time</label
-              >
-              {{ form.end_time(class="block p-3 w-full text-sm text-gray-900
-              bg-gray-50 rounded-lg border border-gray-300 shadow-sm
-              focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700
-              dark:border-gray-600 dark:placeholder-gray-400 dark:text-white
-              dark:focus:ring-primary-500 dark:focus:border-primary-500
-              dark:shadow-sm-light") }}
-            </div>
-            <div>
-              <label
-                for="eventType"
-                class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                >Event Type</label
-              >
-              {{ form.type(class="block p-3 w-full text-sm text-gray-900
-              bg-gray-50 rounded-lg border border-gray-300 shadow-sm
-              focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700
-              dark:border-gray-600 dark:placeholder-gray-400 dark:text-white
-              dark:focus:ring-primary-500 dark:focus:border-primary-500
-              dark:shadow-sm-light") }}
-            </div>
-            <div class="sm:col-span-2">
-              <label
-                for="description"
-                class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400"
-                >Event Description</label
-              >
-              {{ form.description(class="block p-2.5 w-full text-sm
-              text-gray-900 bg-gray-50 rounded-lg shadow-sm border
-              border-gray-300 focus:ring-primary-500 focus:border-primary-500
-              dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400
-              dark:text-white dark:focus:ring-primary-500
-              dark:focus:border-primary-500") }}
-            </div>
-            {{ form.submit(class="py-3 px-5 text-sm font-medium text-center
-            text-white rounded-lg bg-primary-700 sm:w-fit hover:bg-primary-800
-            focus:ring-4 focus:outline-none focus:ring-primary-300
-            dark:bg-primary-600 dark:hover:bg-primary-700
-            dark:focus:ring-primary-800") }}
-          </form>
+      <section class="bg-white dark:bg-gray-900">
+        <div class="py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-6">
+          <div class="mx-auto max-w-screen-sm text-center">
+            <h1
+              class="mb-4 text-7xl tracking-tight font-extrabold lg:text-9xl text-primary-600 dark:text-primary-500"
+            >
+              404
+            </h1>
+            <p
+              class="mb-4 text-3xl tracking-tight font-bold text-gray-900 md:text-4xl dark:text-white"
+            >
+              Something's missing.
+            </p>
+            <p class="mb-4 text-lg font-light text-gray-500 dark:text-gray-400">
+              Sorry, we can't find that page. You'll find lots to explore on the
+              home page.
+            </p>
+            <a
+              href="/"
+              class="inline-flex text-white bg-primary-600 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:focus:ring-primary-900 my-4"
+              >Back to Homepage</a
+            >
+          </div>
         </div>
       </section>
     </main>
