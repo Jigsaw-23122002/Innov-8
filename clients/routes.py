@@ -169,7 +169,7 @@ def isSponsored():
 
 
 def getEvents():
-  query = """
+    query = """
   query MyQuery {
     Event {
       event_description
@@ -186,8 +186,8 @@ def getEvents():
   }
 
   """
-  data = client.execute(query=query, headers=headers)
-  return data['data']['Event']
+    data = client.execute(query=query, headers=headers)
+    return data['data']['Event']
 
 
 def searchOrganizer(userId):
@@ -233,7 +233,7 @@ def searchSponsor(userId):
 
 
 def searchStudent(userId):
-  query = """
+    query = """
   query MyQuery($_like: String = "") {
     Student(where: {student_name: {_like: $_like}}) {
       student_email
@@ -243,28 +243,28 @@ def searchStudent(userId):
     }
   }
   """
-  userId = "%" + userId + "%"
-  variables = {
-    "_like": userId
-  }
-  
-  data = client.execute(query=query, headers=headers, variables=variables)
-  print("Mydata is",data)
-  return data['data']['Student']
+    userId = "%" + userId + "%"
+    variables = {
+        "_like": userId
+    }
+
+    data = client.execute(query=query, headers=headers, variables=variables)
+    print("Mydata is", data)
+    return data['data']['Student']
 
 
 def userDetails():
-  user = supabase.auth.current_user.id
-  data = searchOrganizer(user)
-  if (data["data"]["Organizer"] != []):
-      return data
-  data = searchSponsor(user)
-  if (data["data"]["Sponsor"] != []):
-      return data
-  data = searchStudent(user)
-  if (data["data"]["Student"] != []):
-      return data
-  return []
+    user = supabase.auth.current_user.id
+    data = searchOrganizer(user)
+    if (data["data"]["Organizer"] != []):
+        return data
+    data = searchSponsor(user)
+    if (data["data"]["Sponsor"] != []):
+        return data
+    data = searchStudent(user)
+    if (data["data"]["Student"] != []):
+        return data
+    return []
 
 
 def getUserList(typeofuser, Searchuser):
@@ -287,7 +287,7 @@ def getUserList(typeofuser, Searchuser):
 
 
 def getSponsorship(id):
-  query = """
+    query = """
   mutation MyMutation($event_id: uuid = "", $sponsor_id: uuid = "") {
     insert_Sponsorship(objects: {event_id: $event_id, sponsor_id: $sponsor_id}) {
       returning {
@@ -296,13 +296,13 @@ def getSponsorship(id):
     }
   }
   """
-  user = supabase.auth.current_user.id
-  variables = {
-      "sponsor_id": str(user),
-      "event_id": str(id)
-  }
-  data = client.execute(query=query, variables=variables, headers=headers)
-  return data
+    user = supabase.auth.current_user.id
+    variables = {
+        "sponsor_id": str(user),
+        "event_id": str(id)
+    }
+    data = client.execute(query=query, variables=variables, headers=headers)
+    return data
 
 
 def getSponsorsList():
@@ -435,21 +435,23 @@ def getOrganizerList():
 
 
 def listofUsersFollowed():
-  query = """
+    query = """
   query MyQuery($_eq: uuid = "") {
     Follow(where: {following_id: {_eq: $_eq}}) {
       follower_id
     }
   }
   """
-  variables = {
-    "_eq": str(supabase.auth.current_user.id)
-  }
-  data = client.execute(query = query,variables=variables,headers=headers)['data']['Follow']
-  return data
+    variables = {
+        "_eq": str(supabase.auth.current_user.id)
+    }
+    data = client.execute(query=query, variables=variables,
+                          headers=headers)['data']['Follow']
+    return data
+
 
 def getStudDetails(id_user):
-  query = """
+    query = """
   query MyQuery($_eq: uuid = "") {
     Student(where: {student_id: {_eq: $_eq}}) {
       student_bio
@@ -461,24 +463,28 @@ def getStudDetails(id_user):
     }
   }
   """
-  variables = {
-    "_eq": str(id_user)
-  }
-  data = client.execute(query = query,variables=variables,headers=headers)['data']['Student']
-  return data
+    variables = {
+        "_eq": str(id_user)
+    }
+    data = client.execute(query=query, variables=variables,
+                          headers=headers)['data']['Student']
+    return data
+
 
 @app.route('/timeline')
 def timeline():
-  det = []
-  user_detail = dict()
-  i=0
-  for usr in listofUsersFollowed():
-    newdet = listOfProjectList(usr['follower_id'])
-    det = det + newdet
-    for j in range(0,len(newdet)):
-      user_detail[i] = (getStudDetails(usr['follower_id'])[0]['student_name'])
-      i = i+1
-  return render_template('posts.html',det=det,user_detail=user_detail,size = len(det))
+    det = []
+    user_detail = dict()
+    i = 0
+    for usr in listofUsersFollowed():
+        newdet = listOfProjectList(usr['follower_id'])
+        det = det + newdet
+        for j in range(0, len(newdet)):
+            user_detail[i] = (getStudDetails(
+                usr['follower_id'])[0]['student_name'])
+            i = i+1
+    return render_template('posts.html', det=det, user_detail=user_detail, size=len(det))
+
 
 @app.route('/')
 def home_page():
@@ -488,43 +494,48 @@ def home_page():
     else:
       return render_template('landing.html')
 
+
 def getListOfSponsoredEvents():
-  query = """
+    query = """
   query MyQuery($_eq: uuid = "") {
     Sponsorship(where: {sponsor_id: {_eq: $_eq}}) {
       event_id
     }
   }
   """
-  user = supabase.auth.current_user.id
-  variables = {
-    "_eq": str(user)
-  }
-  data = client.execute(query = query ,variables=variables , headers = headers)['data']['Sponsorship']
-  dataList =[]
-  for dd in data:
-    dataList.append(dd['event_id'])
-  return dataList
+    user = supabase.auth.current_user.id
+    variables = {
+        "_eq": str(user)
+    }
+    data = client.execute(query=query, variables=variables, headers=headers)[
+        'data']['Sponsorship']
+    dataList = []
+    for dd in data:
+        dataList.append(dd['event_id'])
+    return dataList
+
 
 @app.route('/listOfSponsors')
 def listOfSponsors():
-  events = getEvents()
-  form = SponsorshipForm()
-  sponsorsList = []
-  dataList = getListOfSponsoredEvents()
-  for event in events:
-    sponsorsList.append(event['event_id'] in dataList)
-  return render_template('events_for_sponsors.html',sponsorsList=sponsorsList,events = events, size = len(events),form = form)
+    events = getEvents()
+    form = SponsorshipForm()
+    sponsorsList = []
+    dataList = getListOfSponsoredEvents()
+    for event in events:
+        sponsorsList.append(event['event_id'] in dataList)
+    return render_template('events_for_sponsors.html', sponsorsList=sponsorsList, events=events, size=len(events), form=form)
 
-@app.route('/availSponsorship/<eventId>',methods=['GET','POST'])
+
+@app.route('/availSponsorship/<eventId>', methods=['GET', 'POST'])
 def availSponsorship(eventId):
-  form = SponsorshipForm()
-  events = getEvents()
-  getSponsorship(events[int(eventId)]['event_id'])
-  return redirect('/listOfSponsors')
+    form = SponsorshipForm()
+    events = getEvents()
+    getSponsorship(events[int(eventId)]['event_id'])
+    return redirect('/listOfSponsors')
+
 
 def listOfProjectList(userid):
-  query = """
+    query = """
   query MyQuery($_eq: uuid = "") {
     ProjectLink(where: {student_id: {_eq: $_eq}}) {
       Project {
@@ -537,12 +548,12 @@ def listOfProjectList(userid):
     }
   }
   """
-  user = supabase.auth.current_user.id
-  variables = {
-    "_eq": str(userid)
-  }
-  data = client.execute(query=query,variables=variables,headers=headers)
-  return data['data']['ProjectLink']
+    user = supabase.auth.current_user.id
+    variables = {
+        "_eq": str(userid)
+    }
+    data = client.execute(query=query, variables=variables, headers=headers)
+    return data['data']['ProjectLink']
 
 
 @app.route('/followUser/<user_det>')
@@ -553,24 +564,26 @@ def followUser(user_det):
 
 @app.route('/chat/<user_det>')
 def chat(user_det):
-  messageList = getMessage(user_det) 
-  userList = []
-  user = supabase.auth.current_user.id
-  for msg in messageList:
-    userList.append(str(msg["user_id"])==str(user))
-  form = MessageForm()
-  return render_template('chat.html',userList=userList ,data = messageList,size = len(messageList),user_det=user_det, form =form)
+    messageList = getMessage(user_det)
+    userList = []
+    user = supabase.auth.current_user.id
+    for msg in messageList:
+        userList.append(str(msg["user_id"]) == str(user))
+    form = MessageForm()
+    return render_template('chat.html', userList=userList, data=messageList, size=len(messageList), user_det=user_det, form=form)
 
-@app.route('/addMsg/<user_det>',methods=['GET','POST'])
+
+@app.route('/addMsg/<user_det>', methods=['GET', 'POST'])
 def addMsg(user_det):
-  form  = MessageForm()
-  message = form.message.data
-  data2 = sendMessage(user_det,message)
-  return redirect(url_for('chat',user_det = user_det))
+    form = MessageForm()
+    message = form.message.data
+    data2 = sendMessage(user_det, message)
+    return redirect(url_for('chat', user_det=user_det))
+
 
 def getUserDetailForProile():
-  user = supabase.auth.current_user.id
-  query = """
+    user = supabase.auth.current_user.id
+    query = """
   query MyQuery($_eq: uuid = "") {
     Student(where: {student_id: {_eq: $_eq}}) {
       student_email
@@ -581,15 +594,17 @@ def getUserDetailForProile():
       student_interest
     }
   }
-  """ 
-  variables = {
-    "_eq": str(user)
-  }
-  data = client.execute(query=query,headers = headers,variables=variables)['data']['Student']
-  return data
+  """
+    variables = {
+        "_eq": str(user)
+    }
+    data = client.execute(query=query, headers=headers,
+                          variables=variables)['data']['Student']
+    return data
+
 
 def followerCount():
-  query = """
+    query = """
   query MyQuery($_eq: uuid = "") {
     Follow_aggregate(where: {follower_id: {_eq: $_eq}}) {
       aggregate {
@@ -598,12 +613,13 @@ def followerCount():
     }
   }
   """
-  user = supabase.auth.current_user.id
-  variables = {
-    "_eq": str(user)
-  }
-  data = client.execute(query=query,headers = headers,variables=variables)['data']['Follow_aggregate']['aggregate']['count']
-  query = """
+    user = supabase.auth.current_user.id
+    variables = {
+        "_eq": str(user)
+    }
+    data = client.execute(query=query, headers=headers, variables=variables)[
+        'data']['Follow_aggregate']['aggregate']['count']
+    query = """
   query MyQuery($_eq: uuid = "") {
     Follow_aggregate(where: {following_id: {_eq: $_eq}}) {
       aggregate {
@@ -612,29 +628,33 @@ def followerCount():
     }
   }
   """
-  user = supabase.auth.current_user.id
-  variables = {
-    "_eq": str(user)
-  }
-  data2 = client.execute(query=query,headers = headers,variables=variables)['data']['Follow_aggregate']['aggregate']['count']
-  return [data,data2]
+    user = supabase.auth.current_user.id
+    variables = {
+        "_eq": str(user)
+    }
+    data2 = client.execute(query=query, headers=headers, variables=variables)[
+        'data']['Follow_aggregate']['aggregate']['count']
+    return [data, data2]
+
 
 @app.route('/profilePage')
 def profilePage():
-  details = getUserDetailForProile()[0]
-  projectList = listOfProjectList(supabase.auth.current_user.id)
-  follower = followerCount()[0]
-  following = followerCount()[1]
-  projectsCount = len(projectList)
-  return render_template('profile.html',details=details,projectList = projectList,follower = follower,following=following,projectsCount=projectsCount)
+    details = getUserDetailForProile()[0]
+    projectList = listOfProjectList(supabase.auth.current_user.id)
+    follower = followerCount()[0]
+    following = followerCount()[1]
+    projectsCount = len(projectList)
+    return render_template('profile.html', details=details, projectList=projectList, follower=follower, following=following, projectsCount=projectsCount)
+
 
 @app.route('/editprofilePage')
 def editprofilePage():
-  form = EditProfile()
-  return render_template('edit_profile.html', form = form)
+    form = EditProfile()
+    return render_template('edit_profile.html', form=form)
 
-def changeStdDetails(bio_info,name_info,email_info,interest_info):
-  query = """
+
+def changeStdDetails(bio_info, name_info, email_info, interest_info):
+    query = """
   mutation MyMutation($_eq: uuid = "", $student_bio: String = "", $student_email: String = "", $student_interest: String = "", $student_name: String = "") {
     update_Student(where: {student_id: {_eq: $_eq}}, _set: {student_bio: $student_bio, student_email: $student_email, student_interest: $student_interest, student_name: $student_name}) {
       returning {
@@ -643,45 +663,49 @@ def changeStdDetails(bio_info,name_info,email_info,interest_info):
     }
   }
   """
-  user = supabase.auth.current_user.id
-  variables = {
-    "_eq": str(user),
-    "student_bio": str(bio_info),
-    "student_name": str(name_info),
-    "student_email": str(email_info),
-    "student_interest": str(interest_info)
-  }
-  data = client.execute(query = query, variables = variables,headers=headers)
+    user = supabase.auth.current_user.id
+    variables = {
+        "_eq": str(user),
+        "student_bio": str(bio_info),
+        "student_name": str(name_info),
+        "student_email": str(email_info),
+        "student_interest": str(interest_info)
+    }
+    data = client.execute(query=query, variables=variables, headers=headers)
 
 
-@app.route('/editProfileHelper',methods=['GET','POST'])
+@app.route('/editProfileHelper', methods=['GET', 'POST'])
 def editProfileHelper():
-  form = EditProfile()
-  changeStdDetails(form.bio.data,form.fName.data,form.email.data,form.interest.data)
-  return redirect('/editprofilePage')
+    form = EditProfile()
+    changeStdDetails(form.bio.data, form.fName.data,
+                     form.email.data, form.interest.data)
+    return redirect('/editprofilePage')
+
 
 @app.route('/studentList')
 def studentList():
-  data = getStudentList()
-  form  = SearchForm()
-  folowerList =[]
-  for stud in data:
-    print("id of student:",stud['student_id'])
-    folowerList.append(isFollowed(stud['student_id'])) 
-  return render_template('students_list.html', data = data, folowerList = folowerList,size = len(data),form = form)
+    data = getStudentList()
+    form = SearchForm()
+    folowerList = []
+    for stud in data:
+        print("id of student:", stud['student_id'])
+        folowerList.append(isFollowed(stud['student_id']))
+    return render_template('students_list.html', data=data, folowerList=folowerList, size=len(data), form=form)
 
-@app.route('/searchStud',methods=['GET','POST'])
+
+@app.route('/searchStud', methods=['GET', 'POST'])
 def searchStud():
-  form = SearchForm()
-  searchStudentName = form.messageText.data
-  print('student name is',searchStudentName)
-  data = searchStudent(searchStudentName)
-  print('student data in search  is',data)
-  folowerList =[]
-  for stud in data:
-    print("id of student:",stud['student_id'])
-    folowerList.append(isFollowed(stud['student_id'])) 
-  return render_template('students_list.html', data = data, folowerList = folowerList,size = len(data),form = form)
+    form = SearchForm()
+    searchStudentName = form.messageText.data
+    print('student name is', searchStudentName)
+    data = searchStudent(searchStudentName)
+    print('student data in search  is', data)
+    folowerList = []
+    for stud in data:
+        print("id of student:", stud['student_id'])
+        folowerList.append(isFollowed(stud['student_id']))
+    return render_template('students_list.html', data=data, folowerList=folowerList, size=len(data), form=form)
+
 
 @app.route('/displayProjects/<int:pId>')
 def displayProjects(pId):
@@ -999,5 +1023,5 @@ def register(eventID):
 
 @app.route('/project/<projectID>')
 def project(projectID):
-  data=getProject(str(projectID))
-  return render_template('project.html',data=data[0])
+    data = getProject(str(projectID))
+    return render_template('project.html', data=data[0])

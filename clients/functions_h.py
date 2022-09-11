@@ -152,6 +152,7 @@ def checkRegistration(uuid, eventid):
     data = client.execute(query=query, variables=variables, headers=headers)
     return data
 
+
 def findParticipantByEmail(email):
     query = """
     query MyQuery($_eq: String = "") {
@@ -225,6 +226,7 @@ def teamDetails(teamID):
     # Returns an array of the students present in the team
     return data['data']['Team'][0]['Participants']
 
+
 def isSubmitted(uuid, eventID):
     query = """
     query MyQuery($_eq: uuid = "", $_eq1: uuid = "") {
@@ -288,25 +290,27 @@ def eventDetails(eventID):
     print(data['data']['Event'])
     return data['data']['Event']
 
+
 def isProjectSubmitted(teamID):
-    query="""
+    query = """
     query MyQuery($_eq: uuid = "") {
         ProjectLink(where: {team_id: {_eq: $_eq}}) {
             project_id
         }
     }
     """
-    variables={
-        "_eq":str(teamID)
+    variables = {
+        "_eq": str(teamID)
     }
     data = client.execute(query=query, variables=variables, headers=headers)
-    if len(data['data']['ProjectLink'])==0:
+    if len(data['data']['ProjectLink']) == 0:
         return False
     else:
         return True
 
-def submitProject(title,description,teamID):
-    query="""
+
+def submitProject(title, description, teamID):
+    query = """
     mutation MyMutation($proj_desc: String = "", $proj_drive_link: String = "", $proj_images: String = "", $proj_title: String = "", $proj_rich_text_desc: String = "") {
         insert_Project(objects: {proj_desc: $proj_desc, proj_title: $proj_title}) {
             returning {
@@ -317,44 +321,45 @@ def submitProject(title,description,teamID):
         }
     }
     """
-    variables={
-        "proj_desc":description,
-        "proj_title":title,
+    variables = {
+        "proj_desc": description,
+        "proj_title": title,
     }
     data = client.execute(query=query, variables=variables, headers=headers)
-    projectID=data['data']['insert_Project']['returning'][0]['proj_id']
-    
-    query="""
+    projectID = data['data']['insert_Project']['returning'][0]['proj_id']
+
+    query = """
     query MyQuery($_eq: uuid = "") {
         Participants(where: {team_id: {_eq: $_eq}}) {
             student_id
         }
     }
     """
-    variables={
-        "_eq":str(teamID)
+    variables = {
+        "_eq": str(teamID)
     }
-    res=client.execute(query=query, variables=variables, headers=headers)
-    student_ids=res['data']['Participants']
+    res = client.execute(query=query, variables=variables, headers=headers)
+    student_ids = res['data']['Participants']
     for studentID in student_ids:
-        query="""
+        query = """
         mutation MyMutation($project_id: uuid = "", $student_id: uuid = "", $team_id: uuid = "") {
             insert_ProjectLink_one(object: {project_id: $project_id, student_id: $student_id, team_id: $team_id}) {
                 link_id
             }
         }
         """
-        variables={
-            "project_id":str(projectID),
-            "student_id":str(studentID['student_id']),
-            "team_id":str(teamID)
+        variables = {
+            "project_id": str(projectID),
+            "student_id": str(studentID['student_id']),
+            "team_id": str(teamID)
         }
-        result=client.execute(query=query, variables=variables, headers=headers)
+        result = client.execute(
+            query=query, variables=variables, headers=headers)
         print(result)
 
 
 def getProject(projectID):
-    query="""
+    query = """
     query MyQuery($_eq: uuid = "") {
         Project(where: {proj_id: {_eq: $_eq}}) {
         proj_desc
@@ -366,11 +371,12 @@ def getProject(projectID):
         }
     }
     """
-    variables={
-        "_eq":str(projectID)
+    variables = {
+        "_eq": str(projectID)
     }
     data = client.execute(query=query, variables=variables, headers=headers)
-    actual_data=data['data']['Project']
+    actual_data = data['data']['Project']
     return actual_data
+
 
 getProject('e5e76d66-b2e0-476e-b583-6025797704df')

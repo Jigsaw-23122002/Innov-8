@@ -39,9 +39,7 @@
           Best practices for successful prototypes
         </h1>
       </header>
-        {% filter markdown %}
-        {{ data['proj_desc'] }}
-        {% endfilter %}
+      {% filter markdown %} {{ data['proj_desc'] }} {% endfilter %}
       <section class="not-format">
         <div class="flex justify-between items-center mb-6">
           <h2
