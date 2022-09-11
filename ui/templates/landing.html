@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="./assets/img/favicon.ico" />
+  <link rel="apple-touch-icon" sizes="76x76" href="./assets/img/apple-icon.png" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+    <link rel="stylesheet" href="../static/dist/css/output.css">
+    <title>Innov-8</title>
+</head>
+
+<body class="flex flex-col min-h-screen">
+    <header>
+        <nav class="bg-white border-gray-200 px-4 lg:px-6 py-2.5 dark:bg-gray-800">
+            <div class="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
+                <a href="/" class="flex items-center">
+                    <span class="self-center text-xl font-semibold whitespace-nowrap dark:text-white">Innov-8</span>
+                </a>
+                <div class="flex items-center lg:order-2">
+                    <a href="#"
+                        class="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800">Login</a>
+                    <button data-collapse-toggle="mobile-menu-2" type="button"
+                        class="inline-flex items-center p-2 ml-1 text-sm text-gray-500 rounded-lg lg:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+                        aria-controls="mobile-menu-2" aria-expanded="false"
+                        onClick="document.getElementById('mobile-menu-2').classList.toggle('hidden')">
+                        <span class=" sr-only">Open main menu</span>
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd"
+                                d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
+                                clip-rule="evenodd"></path>
+                        </svg>
+                        <svg class="hidden w-6 h-6" fill="currentColor" viewBox="0 0 20 20"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd"
+                                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                clip-rule="evenodd"></path>
+                        </svg>
+                    </button>
+                </div>
+                <div class="hidden justify-between items-center w-full lg:flex lg:w-auto lg:order-1" id="mobile-menu-2">
+                    <ul class="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0">
+                        <li>
+                            <a href="#"
+                                class="block py-2 pr-4 pl-3 text-white rounded bg-primary-700 lg:bg-transparent lg:text-primary-700 lg:p-0 dark:text-white"
+                                aria-current="page">Home</a>
+                        </li>
+                        <li>
+                            <a href="#"
+                                class="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">Events</a>
+                        </li>
+                        <li>
+                            <a href="#"
+                                class="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">Posts</a>
+                        </li>
+                        <li>
+                            <a href="#"
+                                class="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">Messages</a>
+                        </li>
+                        <li>
+                            <a href="#"
+                                class="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">Profile</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="flex-1">
+        <div class="relative pt-16 pb-32 flex content-center items-center justify-center" style="min-height: 75vh;">
+            <div class="absolute top-0 w-full h-full bg-center bg-cover"
+              style='background-image: url("https://cdn.vectorstock.com/i/1000x1000/82/20/creative-solution-science-brain-knowledge-vector-16738220.webp");'>
+              <span id="blackOverlay" class="w-full h-full absolute opacity-50 bg-black"></span>
+            </div>
+            <div class="container relative mx-auto">
+              <div class="items-center flex flex-wrap">
+                <div class="w-full lg:w-6/12 px-4 ml-auto mr-auto text-center">
+                  <div class="pr-12">
+                    <h1 class="text-white font-bold text-7xl text-blue-100">
+                      INNOV-8
+                    </h1>
+                    <p class="mt-4 text-lg text-gray-300">
+                      A platform to build future of Science
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="top-auto bottom-0 left-0 right-0 w-full absolute pointer-events-none overflow-hidden"
+              style="height: 70px;">
+              <svg class="absolute bottom-0 overflow-hidden" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"
+                version="1.1" viewBox="0 0 2560 100" x="0" y="0">
+                <polygon class="text-gray-300 fill-current" points="2560 0 2560 100 0 100"></polygon>
+              </svg>
+            </div>
+          </div>
+          <section class="pb-20 bg-gray-300 -mt-24">
+            <div class="container mx-auto px-4">
+              <div class="flex flex-wrap">
+                <div class="lg:pt-12 pt-6 w-full md:w-4/12 px-4 text-center">
+                  <div class="relative flex flex-col min-w-0 break-words bg-white w-full mb-8 shadow-lg rounded-lg">
+                    <div class="px-4 py-5 flex-auto">
+                      <div
+                        class="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 mb-5 shadow-lg rounded-full bg-red-400">
+                        <i class="fas fa-award"></i>
+                      </div>
+                      <h6 class="text-xl font-semibold">Idea to Reality</h6>
+                      <p class="mt-2 mb-4 text-gray-600">
+                        Bring your brainstorming ideas to reality! Participate in amazing exhibitions,seminars,projects
+                        organized by skilled organizers having immense knowledge in STEM field
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="w-full md:w-4/12 px-4 text-center">
+                  <div class="relative flex flex-col min-w-0 break-words bg-white w-full mb-8 shadow-lg rounded-lg">
+                    <div class="px-4 py-5 flex-auto">
+                      <div
+                        class="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 mb-5 shadow-lg rounded-full bg-blue-400">
+                        <i class="fas fa-retweet"></i>
+                      </div>
+                      <h6 class="text-xl font-semibold">Connect</h6>
+                      <p class="mt-2 mb-4 text-gray-600">
+                        A strong bridge between innovative ideas of students and real world opportunities.
+                        Connect with students & mentors in your field of interest.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="pt-6 w-full md:w-4/12 px-4 text-center">
+                  <div class="relative flex flex-col min-w-0 break-words bg-white w-full mb-8 shadow-lg rounded-lg">
+                    <div class="px-4 py-5 flex-auto">
+                      <div
+                        class="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 mb-5 shadow-lg rounded-full bg-green-400">
+                        <i class="fas fa-fingerprint"></i>
+                      </div>
+                      <h6 class="text-xl font-semibold">Commercial Viability</h6>
+                      <p class="mt-2 mb-4 text-gray-600">
+                        Get backing by best of the organizations and sponsors in Stem Industry. Get immense knowledge from
+                        these organizations and sponsors by personally interacting with them.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="flex flex-wrap items-center mt-20">
+                <div class="w-full md:w-5/12 px-4 mr-auto ml-auto">
+                  <div
+                    class="text-gray-600 p-3 text-center inline-flex items-center justify-center w-16 h-16 mb-6 shadow-lg rounded-full bg-gray-100">
+                    <i class="fas fa-user-friends text-xl"></i>
+                  </div>
+                  <h3 class="text-3xl mb-2 font-bold leading-normal">
+                    Our Objective
+                  </h3>
+                  <p class="text-lg font-light leading-relaxed mt-4 mb-4 text-gray-700">
+                    Channelize the bright minds in the right direction by connecting them with mentors in their field of
+                    interest.
+                    <br>
+                  <p font-extrabold text-gray-900 mb-10>
+                    Why INNOV-8 ? Current Need
+                  </p>
+                  <p class="text-lg font-light leading-relaxed mt-4 mb-4 text-gray-700">
+                    It is very important for young students to get a platform to display their innovations. Current school
+                    systems do not have an integrated environment for projects,seminars and exhibitions. Sometimes, various
+                    students aren't aware about what they can build and how much impact they can create by building projects.
+                  </p>
+                  <p class="text-lg font-light leading-relaxed mt-0 mb-4 text-gray-700">
+                    INNOV-8 basically bridges the gap between the available opportunities and the dedicated students waiting
+                    to bring their thought to reality.
+                  </p>
+      
+      
+      
+                </div>
+                <div class="w-full md:w-4/12 px-4 mr-auto ml-auto">
+                  <div
+                    class="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded-lg bg-indigo-200">
+                    <img alt="..."
+                      src="https://tryengineering.org/wp-content/uploads/bigstock-Science-Technology-Engineeri-268236289.jpg"
+                      class="w-full align-middle rounded-t-lg" />
+                    <blockquote class="relative p-8 mb-4 bg-indigo-200">
+                      <svg preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 583 95"
+                        class="absolute left-0 w-full block" style="height: 95px; top: -94px;">
+                        <polygon points="-30,95 583,95 583,65" class="text-indigo-200 fill-current"></polygon>
+                      </svg>
+                      <h4 class="text-xl font-bold text-gray-700">
+                        What is STEM ?
+                      </h4>
+                      <p class="text-md font-light mt-2 text-gray-800">
+                        <b>S</b>cience <b>T</b>echnology <b>E</b>ngineering <b>M</b>ath
+                      </p>
+                    </blockquote>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+          <section class="relative">
+            <div class="bottom-auto top-0 left-0 right-0 w-full absolute pointer-events-none overflow-hidden -mt-20"
+              style="height: 80px;">
+              <svg class="absolute bottom-0 overflow-hidden" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"
+                version="1.1" viewBox="0 0 2560 100" x="0" y="0">
+                <polygon class="text-white fill-current" points="2560 0 2560 100 0 100"></polygon>
+              </svg>
+            </div>
+            <div class="container mx-auto px-4">
+              <div class="items-center flex flex-wrap">
+      
+                <div class="w-full md:w-5/12 ml-auto mr-auto px-4">
+                  <div class="md:pr-12">
+      
+      
+      
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+      
+          <section class="relative block bg-gray-900">
+            <div class="bottom-auto top-0 left-0 right-0 w-full absolute pointer-events-none overflow-hidden -mt-20"
+              style="height: 80px;">
+              <svg class="absolute bottom-0 overflow-hidden" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"
+                version="1.1" viewBox="0 0 2560 100" x="0" y="0">
+                <polygon class="text-gray-900 fill-current" points="2560 0 2560 100 0 100"></polygon>
+              </svg>
+            </div>
+            <div class="container mx-auto px-4 lg:pt-24 lg:pb-24">
+              <div class="flex flex-wrap text-center justify-center">
+                <div class="w-full lg:w-6/12 px-4">
+                  <h2 class="text-4xl  mt-2 font-semibold text-white">Build something</h2>
+                  <p class="text-lg leading-relaxed mt-4 mb-4 text-gray-500">
+                    Students having interest in STEM often do not get proper backing from their schools. No longer wait. A
+                    dedicated platform for the very unorganized STEM sector, aimed at bringing together all science
+                    exhibitions on one platform for students. Also aimed at connecting like-minded across various schools,
+                    bridging social gaps.
+                  </p>
+                </div>
+              </div>
+              <div class="flex flex-wrap mt-12 justify-center">
+                <div class="w-full lg:w-3/12 px-4 text-center">
+                  <div
+                    class="text-gray-900 p-3 w-12 h-12 shadow-lg rounded-full bg-white inline-flex items-center justify-center">
+                    <i class="fas fa-medal text-xl"></i>
+                  </div>
+                  <h6 class="text-xl mt-5 font-semibold text-white">
+                    For students
+                  </h6>
+                  <p class="mt-2 mb-4 text-gray-500">
+                    Display your projects, make teams, participate in exhibitions, compete, get exposure, get more
+                    opportunities, contact students with messaging feature
+                  </p>
+                </div>
+                <div class="w-full lg:w-3/12 px-4 text-center">
+                  <div
+                    class="text-gray-900 p-3 w-12 h-12 shadow-lg rounded-full bg-white inline-flex items-center justify-center">
+                    <i class="fas fa-poll text-xl"></i>
+                  </div>
+                  <h5 class="text-xl mt-5 font-semibold text-white">
+                    For organizers
+                  </h5>
+                  <p class="mt-2 mb-4 text-gray-500">
+                    Streamline your event organizing experience to one platform - Host an event, Call for applicants, Contact
+                    sponsors for sponsoring their events
+                  </p>
+                </div>
+                <div class="w-full lg:w-3/12 px-4 text-center">
+                  <div
+                    class="text-gray-900 p-3 w-12 h-12 shadow-lg rounded-full bg-white inline-flex items-center justify-center">
+                    <i class="fas fa-lightbulb text-xl"></i>
+                  </div>
+                  <h5 class="text-xl mt-5 font-semibold text-white">For sponsors</h5>
+                  <p class="mt-2 mb-4 text-gray-500">
+                    Browse for competitions to potentially sponsor, Contact organizers using messaging inbox feature
+      
+                  </p>
+                </div>
+              </div>
+            </div>
+          </section>
+          
+    </main>
+
+    <footer
+        class="p-4 bg-white rounded-lg shadow md:flex md:items-center md:justify-between md:p-6 dark:bg-gray-800 w-full">
+        <span class="text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2022 <a href="/"
+                class="hover:underline">Innov-8</a>.
+        </span>
+        <ul class="flex flex-wrap items-center mt-3 text-sm text-gray-500 dark:text-gray-400 sm:mt-0">
+            <li>
+                <a href="#" class="mr-4 hover:underline md:mr-6 ">Home</a>
+            </li>
+            <li>
+                <a href="#" class="mr-4 hover:underline md:mr-6">Events</a>
+            </li>
+            <li>
+                <a href="#" class="mr-4 hover:underline md:mr-6">Posts</a>
+            </li>
+            <li>
+                <a href="#" class="mr-4 hover:underline md:mr-6">Messages</a>
+            </li>
+            <li>
+                <a href="#" class="hover:underline">Profile</a>
+            </li>
+        </ul>
+    </footer>
+
+</body>
+
+</html>
