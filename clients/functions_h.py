@@ -351,3 +351,26 @@ def submitProject(title,description,teamID):
         }
         result=client.execute(query=query, variables=variables, headers=headers)
         print(result)
+
+
+def getProject(projectID):
+    query="""
+    query MyQuery($_eq: uuid = "") {
+        Project(where: {proj_id: {_eq: $_eq}}) {
+        proj_desc
+        proj_id
+        proj_rich_text_desc
+        proj_title
+        proj_drive_link
+        proj_images
+        }
+    }
+    """
+    variables={
+        "_eq":str(projectID)
+    }
+    data = client.execute(query=query, variables=variables, headers=headers)
+    actual_data=data['data']['Project']
+    return actual_data
+
+getProject('e5e76d66-b2e0-476e-b583-6025797704df')
